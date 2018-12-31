@@ -1,0 +1,37 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Forgot Password</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-list>
+        <ion-item>
+            <ion-icon name="mail" color="primary" slot="start"></ion-icon>
+            <ion-input type="email" [(ngModel)]="forgotPassDetails.email" placeholder="Email"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="hasCodeBeenSent">
+            <ion-icon name="lock" color="primary" slot="start"></ion-icon>
+            <ion-input type="string" [(ngModel)]="forgotPassDetails.code"
+                       placeholder="Verification Code (check your email)"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="hasCodeBeenSent">
+            <ion-icon name="lock" color="primary" slot="start"></ion-icon>
+            <ion-input type="password" [(ngModel)]="forgotPassDetails.password"
+                       placeholder="Choose New Password"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="hasCodeBeenSent">
+            <ion-icon name="lock" color="primary" slot="start"></ion-icon>
+            <ion-input type="password" [(ngModel)]="forgotPassDetails.repeatPassword"
+                       placeholder="Repeat New Password"></ion-input>
+        </ion-item>
+    </ion-list>
+    <ion-button shape="round" expand="full" size="large" (click)="doResetPassword()"
+                [disabled]="isButtonDisabled">{{buttonText()}}</ion-button>
+    <ion-list>
+        <ion-item>
+            <ion-button fill="clear" size="small" slot="start" (click)="goToLoginPage()">Sign In</ion-button>
+            <ion-button fill="clear" size="small" slot="end" (click)="goToRegisterPage()">Not Registered?</ion-button>
+        </ion-item>
+    </ion-list>
+</ion-content>

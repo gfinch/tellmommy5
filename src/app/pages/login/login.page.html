@@ -1,0 +1,27 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Sign in</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-list>
+        <ion-item>
+            <ion-icon name="mail" color="primary" slot="start"></ion-icon>
+            <ion-input type="email" [(ngModel)]="loginDetails.email" value="" placeholder="Email"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-icon name="lock" color="primary" slot="start"></ion-icon>
+            <ion-input type="password" [(ngModel)]="loginDetails.password" value="" placeholder="Password"></ion-input>
+        </ion-item>
+    </ion-list>
+    <ion-button shape="round" expand="full" size="large" (click)="doLogin()" [disabled]="isButtonDisabled">Sign In
+    </ion-button>
+    <ion-list>
+        <ion-item>
+            <ion-button fill="clear" size="small" slot="start" (click)="goToRegisterPage()">Not Registered?</ion-button>
+            <ion-button fill="clear" size="small" slot="end" (click)="goToForgotPassPage()">Forgot Password?
+            </ion-button>
+        </ion-item>
+    </ion-list>
+</ion-content>

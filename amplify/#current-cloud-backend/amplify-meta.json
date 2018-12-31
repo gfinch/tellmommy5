@@ -1,0 +1,33 @@
+{
+	"providers": {
+		"awscloudformation": {
+			"AuthRoleName": "tellmommy5-20181229170255-authRole",
+			"UnauthRoleArn": "arn:aws:iam::207843647879:role/tellmommy5-20181229170255-unauthRole",
+			"AuthRoleArn": "arn:aws:iam::207843647879:role/tellmommy5-20181229170255-authRole",
+			"Region": "us-east-1",
+			"DeploymentBucketName": "tellmommy5-20181229170255-deployment",
+			"UnauthRoleName": "tellmommy5-20181229170255-unauthRole",
+			"StackName": "tellmommy5-20181229170255",
+			"StackId": "arn:aws:cloudformation:us-east-1:207843647879:stack/tellmommy5-20181229170255/d174d490-0bbd-11e9-abd7-0e89924d3e24"
+		}
+	},
+	"auth": {
+		"tellmommy5": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/tellmommy5-20181229170255-deployment/amplify-cfn-templates/auth/tellmommy5-cloudformation-template.yml",
+				"logicalId": "authtellmommy5"
+			},
+			"lastPushTimeStamp": "2018-12-29T23:07:32.327Z",
+			"output": {
+				"AppClientSecret": "1ten4ig1389tf0533jg2sm5hbcpn8lrleaah662em1dtusitkb9u",
+				"UserPoolId": "us-east-1_InBpURaeV",
+				"AppClientIDWeb": "1sajp9gc6u86hgn792bjsscvlh",
+				"AppClientID": "4ms94uitjcplsmebc5fvddpiig",
+				"UserPoolName": "tellmommy5"
+			},
+			"lastPushDirHash": "+qUSGj0LUqqlk4EIMBkui8SgQ4w="
+		}
+	}
+}
