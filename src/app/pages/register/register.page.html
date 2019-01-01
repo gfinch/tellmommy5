@@ -21,12 +21,19 @@
                        placeholder="Repeat Password"></ion-input>
         </ion-item>
     </ion-list>
-    <ion-button shape="round" expand="full" size="large" (click)="doRegister()"
-                [disabled]="isButtonDisabled">Register
-    </ion-button>
-    <ion-list>
-        <ion-item>
-            <ion-button fill="clear" size="small" slot="end" (click)="goToLoginPage()">Already Registered?</ion-button>
-        </ion-item>
-    </ion-list>
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <ion-button shape="round" expand="full" size="large" (click)="doRegister()"
+                            [disabled]="isButtonDisabled">Register
+                </ion-button>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-button fill="clear" size="small" expand="full" (click)="goToLoginPage()">Already Registered?
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>

@@ -1,3 +1,15 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+    <ion-menu side="end" type="reveal">
+        <ion-content>
+            <ion-list>
+                <ion-menu-toggle>
+                    <ion-item tappable (click)="doSignOut()">
+                        <ion-icon name="log-out" slot="start"></ion-icon>
+                        <ion-label>Sign Out</ion-label>
+                    </ion-item>
+                </ion-menu-toggle>
+            </ion-list>
+        </ion-content>
+    </ion-menu>
+    <ion-router-outlet main></ion-router-outlet>
 </ion-app>

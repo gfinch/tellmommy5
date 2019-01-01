@@ -1,18 +1,18 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {LoginPage} from './login.page';
+import {HomePage} from './home.page';
 import {TestBedFactory} from '../../utilities/tests/TestBedFactory';
 
-describe('LoginPage', () => {
-    let component: LoginPage;
-    let fixture: ComponentFixture<LoginPage>;
+describe('HomePage', () => {
+    let component: HomePage;
+    let fixture: ComponentFixture<HomePage>;
 
     beforeEach(async(() => {
-        TestBedFactory.configure([LoginPage]);
+        TestBedFactory.configure([HomePage]);
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(LoginPage);
+        fixture = TestBed.createComponent(HomePage);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

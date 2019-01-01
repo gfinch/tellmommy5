@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth/auth.service';
-import {AlertController, LoadingController} from '@ionic/angular';
+import {AlertController, LoadingController, NavController} from '@ionic/angular';
 import {AuthUtilities, RegistrationDetails} from '../../utilities/auth/auth';
 
 @Component({
@@ -14,7 +13,7 @@ export class LoginPage implements OnInit {
     isButtonDisabled = false;
     loginDetails: RegistrationDetails = null;
 
-    constructor(private router: Router, private authService: AuthService,
+    constructor(private navController: NavController, private authService: AuthService,
                 private loadingCtrl: LoadingController,
                 private alertCtrl: AlertController) {
         this.loginDetails = new RegistrationDetails();
@@ -24,11 +23,11 @@ export class LoginPage implements OnInit {
     }
 
     goToRegisterPage() {
-        this.router.navigate(['/register']);
+        this.navController.navigateBack('/register');
     }
 
     goToForgotPassPage() {
-        this.router.navigate(['/forgot-pass']);
+        this.navController.navigateForward('/forgot-pass');
     }
 
     doLogin() {
@@ -47,6 +46,7 @@ export class LoginPage implements OnInit {
                     console.log(username + ' logged in.');
                     loader.dismiss();
                     this.isButtonDisabled = false;
+                    this.navController.navigateForward('/');
                 }).catch(err => {
                     console.log(JSON.stringify(err));
                     loader.dismiss();

@@ -26,12 +26,24 @@
                        placeholder="Repeat New Password"></ion-input>
         </ion-item>
     </ion-list>
-    <ion-button shape="round" expand="full" size="large" (click)="doResetPassword()"
-                [disabled]="isButtonDisabled">{{buttonText()}}</ion-button>
-    <ion-list>
-        <ion-item>
-            <ion-button fill="clear" size="small" slot="start" (click)="goToLoginPage()">Sign In</ion-button>
-            <ion-button fill="clear" size="small" slot="end" (click)="goToRegisterPage()">Not Registered?</ion-button>
-        </ion-item>
-    </ion-list>
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <ion-button shape="round" expand="full" size="large" (click)="doResetPassword()"
+                            [disabled]="isButtonDisabled">{{buttonText()}}</ion-button>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-button fill="clear" expand="full" size="small" (click)="goToLoginPage()">Back to Sign In
+                </ion-button>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-button fill="clear" expand="full" size="small" (click)="goToRegisterPage()">Not Registered?
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>

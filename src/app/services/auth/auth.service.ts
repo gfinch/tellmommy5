@@ -14,6 +14,10 @@ export class AuthService {
         console.log('Instantiating AuthService');
     }
 
+    isSignedIn(): boolean {
+        return this.familyId !== null;
+    }
+
     signUp(email, password): Promise<string> {
         return new Promise((resolve, reject) => {
             this.getFamilyId().then(familyId => {
@@ -81,6 +85,16 @@ export class AuthService {
         });
     }
 
+    signOut(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.amplify.signOut().then(() => {
+                this.familyId = null;
+                resolve();
+            });
+        });
+    }
+
+    // Called during register process to create a new family id.
     private getFamilyId(): Promise<string> {
         return new Promise<string>((resolve, reject) => {
             if (this.familyId) {
@@ -105,6 +119,7 @@ export class AuthService {
         });
     }
 
+    // Called during sign in process to retrieve family id.
     private getFamilyIdFromCognito(): Promise<string> {
         return new Promise<string>((resolve, reject) => {
             this.amplify.currentUserInfo().then(userInfo => {

@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthUtilities, RegistrationDetails} from '../../utilities/auth/auth';
-import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth/auth.service';
-import {AlertController, LoadingController} from '@ionic/angular';
+import {AlertController, LoadingController, NavController} from '@ionic/angular';
 
 @Component({
     selector: 'app-forgot-pass',
@@ -15,7 +14,8 @@ export class ForgotPassPage implements OnInit {
     forgotPassDetails: RegistrationDetails = null;
     hasCodeBeenSent = false;
 
-    constructor(private router: Router, private authService: AuthService,
+    constructor(private navController: NavController,
+                private authService: AuthService,
                 private loadingCtrl: LoadingController,
                 private alertCtrl: AlertController) {
         this.forgotPassDetails = new RegistrationDetails();
@@ -33,11 +33,11 @@ export class ForgotPassPage implements OnInit {
     }
 
     goToLoginPage() {
-        this.router.navigate(['/login']);
+        this.navController.navigateBack('/login');
     }
 
     goToRegisterPage() {
-        this.router.navigate(['/register']);
+        this.navController.navigateBack('/register');
     }
 
     doResetPassword() {
@@ -50,7 +50,7 @@ export class ForgotPassPage implements OnInit {
                 const code = this.forgotPassDetails.code;
                 this.authService.forgotPasswordSubmit(email, code, password).then(() => {
                     AuthUtilities.showAlert(this.alertCtrl, 'Success!', 'You successfully changed your password.');
-                    //move to another page.
+                    this.navController.navigateForward('/');
                 }).catch(err => {
                     const errorMessage = AuthUtilities.extractErrorMessage(err);
                     AuthUtilities.showError(this.alertCtrl, errorMessage);

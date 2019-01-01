@@ -1,11 +1,15 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
+import {AuthGuard} from './guards/auth.guard';
+import {SetupGuard} from './guards/setup.guard';
 
 const routes: Routes = [
-    {path: '', redirectTo: 'register', pathMatch: 'full'},
+    {path: '', redirectTo: 'home', pathMatch: 'full'},
     {path: 'register', loadChildren: './pages/register/register.module#RegisterPageModule'},
     {path: 'login', loadChildren: './pages/login/login.module#LoginPageModule'},
-  { path: 'forgot-pass', loadChildren: './pages/forgot-pass/forgot-pass.module#ForgotPassPageModule' },
+    {path: 'forgot-pass', loadChildren: './pages/forgot-pass/forgot-pass.module#ForgotPassPageModule'},
+    {path: 'home', loadChildren: './pages/home/home.module#HomePageModule', canActivate: [AuthGuard, SetupGuard]},
+    {path: 'reward-system', loadChildren: './pages/reward-system/reward-system.module#RewardSystemPageModule', canActivate: [AuthGuard]},
 ];
 
 @NgModule({

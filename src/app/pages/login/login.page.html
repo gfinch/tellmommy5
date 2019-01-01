@@ -15,13 +15,25 @@
             <ion-input type="password" [(ngModel)]="loginDetails.password" value="" placeholder="Password"></ion-input>
         </ion-item>
     </ion-list>
-    <ion-button shape="round" expand="full" size="large" (click)="doLogin()" [disabled]="isButtonDisabled">Sign In
-    </ion-button>
-    <ion-list>
-        <ion-item>
-            <ion-button fill="clear" size="small" slot="start" (click)="goToRegisterPage()">Not Registered?</ion-button>
-            <ion-button fill="clear" size="small" slot="end" (click)="goToForgotPassPage()">Forgot Password?
-            </ion-button>
-        </ion-item>
-    </ion-list>
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <ion-button shape="round" expand="full" size="large" (click)="doLogin()"
+                            [disabled]="isButtonDisabled">Sign In
+                </ion-button>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-button fill="clear" expand="full" size="small" (click)="goToRegisterPage()">Not Registered?
+                </ion-button>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-button fill="clear" expand="full" size="small" (click)="goToForgotPassPage()">Forgot Password?
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>

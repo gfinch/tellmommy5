@@ -14,6 +14,8 @@ export abstract class AmplifyService {
 
     abstract signIn(email: string, password: string): Promise<any>;
 
+    abstract signOut(): Promise<any>;
+
     abstract forgotPassword(email: string): Promise<any>;
 
     abstract forgotPasswordSubmit(email: string, code: string, password: string): Promise<any>;
@@ -33,7 +35,7 @@ export class AmplifyServiceAWS extends AmplifyService {
     }
 
     signUp(email: string, password: string, familyId: string): Promise<any> {
-        const username = MD5.hash(email);
+        const username = this.generateUserName(email);
 
         const attributes = {
             email: email,
@@ -50,17 +52,21 @@ export class AmplifyServiceAWS extends AmplifyService {
     }
 
     signIn(email: string, password: string): Promise<any> {
-        const username = MD5.hash(email);
+        const username = this.generateUserName(email);
         return Auth.signIn(username, password);
     }
 
+    signOut(): Promise<any> {
+        return Auth.signOut();
+    }
+
     forgotPassword(email: string): Promise<any> {
-        const username = MD5.hash(email);
+        const username = this.generateUserName(email);
         return Auth.forgotPassword(username);
     }
 
     forgotPasswordSubmit(email: string, code: string, password: string): Promise<any> {
-        const username = MD5.hash(email);
+        const username = this.generateUserName(email);
         return Auth.forgotPasswordSubmit(username, code, password);
     }
 
@@ -84,5 +90,9 @@ export class AmplifyServiceAWS extends AmplifyService {
                 }
             }).catch(err => reject(err));
         });
+    }
+
+    generateUserName(email) {
+        return MD5.hash(email.toLowerCase());
     }
 }

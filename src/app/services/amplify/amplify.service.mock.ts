@@ -35,6 +35,12 @@ export class AmplifyServiceMock extends AmplifyService {
         });
     }
 
+    signOut(): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            resolve();
+        });
+    }
+
     forgotPassword(email: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             const username = MD5.hash(email);

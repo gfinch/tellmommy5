@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth/auth.service';
-import {AlertController, LoadingController} from '@ionic/angular';
-import {Router} from '@angular/router';
+import {AlertController, LoadingController, NavController} from '@ionic/angular';
 import {AuthUtilities, RegistrationDetails} from '../../utilities/auth/auth';
 
 @Component({
@@ -14,7 +13,7 @@ export class RegisterPage implements OnInit {
     public registrationDetails: RegistrationDetails;
     public isButtonDisabled = false;
 
-    constructor(private router: Router, private authService: AuthService,
+    constructor(private navController: NavController, private authService: AuthService,
                 private loadingCtrl: LoadingController,
                 private alertCtrl: AlertController) {
         this.registrationDetails = new RegistrationDetails();
@@ -24,7 +23,7 @@ export class RegisterPage implements OnInit {
     }
 
     goToLoginPage() {
-        this.router.navigate(['/login']);
+        this.navController.navigateForward('/login');
     }
 
     doRegister() {
@@ -37,10 +36,19 @@ export class RegisterPage implements OnInit {
                 const email = this.registrationDetails.email;
                 const password = this.registrationDetails.password;
 
-                this.authService.signUp(email, password).then(username => {
-                    console.log(username + ' registered.');
-                    loader.dismiss();
-                    this.isButtonDisabled = false;
+                this.authService.signUp(email, password).then(registeredUserName => {
+                    console.log(registeredUserName + ' registered.');
+                    this.authService.signIn(email, password).then(signedInUserName => {
+                        console.log(signedInUserName + ' logged in.');
+                        loader.dismiss();
+                        this.isButtonDisabled = false;
+                        this.navController.navigateForward('/');
+                    }).catch(err => {
+                        loader.dismiss();
+                        this.isButtonDisabled = false;
+                        const errorMessage = AuthUtilities.extractErrorMessage(err);
+                        AuthUtilities.showError(this.alertCtrl, errorMessage);
+                    });
                 }).catch(err => {
                     loader.dismiss();
                     this.isButtonDisabled = false;
