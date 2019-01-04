@@ -2,12 +2,18 @@ import {Injectable} from '@angular/core';
 import {Events} from '@ionic/angular';
 import {EventHandler} from '@ionic/angular/dist/providers/events';
 
+export enum EventTopic {
+    ClearAll = 'ClearAll',
+    RewardSystemTransaction = 'RewardSystemTransaction',
+    RewardSystemChanged = 'RewardSystemChanged',
+    KidTransaction = 'KidTransaction',
+    KidChanged = 'KidChanged'
+}
+
 export abstract class EventsService {
-    abstract subscribe(topic: string, handler: EventHandler): void;
+    abstract subscribe(topic: EventTopic, handler: EventHandler): void;
 
-    abstract unsubscribe(topic: string, handler?: EventHandler): boolean;
-
-    abstract publish(topic: string, ...args: any[]): any[] | null;
+    abstract publish(topic: EventTopic, ...args: any[]): any[] | null;
 }
 
 @Injectable({
@@ -19,16 +25,21 @@ export class EventsServiceIonic extends EventsService {
         super();
     }
 
-    subscribe(topic: string, handler: EventHandler): void {
-        return this.events.subscribe(topic, handler);
+    subscribe(topic: EventTopic, handler: EventHandler): void {
+        return this.events.subscribe(topic, this.repackage(topic, handler));
     }
 
-    unsubscribe(topic: string, handler?: EventHandler): boolean {
-        return this.events.unsubscribe(topic, handler);
-    }
-
-    publish(topic: string, ...args: any[]): any[] | null {
+    publish(topic: EventTopic, ...args: any[]): any[] | null {
+        const head = args[0];
+        console.log('Sent at ' + topic + ': ' + JSON.stringify(head));
         return this.events.publish(topic, args);
     }
 
+    private repackage(topic: EventTopic, handler: EventHandler) {
+        return (args: any[]) => {
+            const head = args[0];
+            console.log('Received at ' + topic + ': ' + JSON.stringify(head));
+            handler(head);
+        };
+    }
 }

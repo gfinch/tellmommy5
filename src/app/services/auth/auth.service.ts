@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {AmplifyService} from '../amplify/amplify.service';
 import {StorageService} from '../storage/storage.service';
 import {UUID} from '../../utilities/uuid/uuid';
+import {EventsService, EventTopic} from '../events/events.service';
 
 @Injectable({
     providedIn: 'root'
@@ -10,12 +11,29 @@ export class AuthService {
     familyId: string = null;
 
     constructor(private amplify: AmplifyService,
-                private storage: StorageService) {
+                private storage: StorageService,
+                private eventsService: EventsService) {
         console.log('Instantiating AuthService');
+        eventsService.subscribe(EventTopic.ClearAll, () => {
+            this.familyId = null;
+        });
     }
 
-    isSignedIn(): boolean {
-        return this.familyId !== null;
+    isSignedIn(): Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            if (this.familyId) {
+                resolve(true);
+            } else {
+                this.getFamilyIdFromCognito().then(cognitoFamilyId => {
+                    if (cognitoFamilyId) {
+                        this.familyId = cognitoFamilyId;
+                        resolve(true);
+                    } else {
+                        resolve(false);
+                    }
+                });
+            }
+        });
     }
 
     signUp(email, password): Promise<string> {

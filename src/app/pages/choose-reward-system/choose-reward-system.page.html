@@ -1,0 +1,22 @@
+<ion-header>
+    <ion-toolbar color="header">
+        <ion-title>Reward System</ion-title>
+        <ion-buttons slot="end">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-radio-group [(ngModel)]="rewardSystem">
+        <ion-item *ngFor="let system of rewardSystems">
+            <ion-icon [name]="system.icon" [color]="system.color" slot="start"></ion-icon>
+            <ion-label text-wrap>
+                {{system.name}}
+                <p>{{system.description}}</p>
+            </ion-label>
+            <ion-radio [value]="system.id" (click)="doSaveSelection()"></ion-radio>
+        </ion-item>
+    </ion-radio-group>
+    <ion-button shape="round" expand="full" size="large" (click)="doneWithPage()">Ok</ion-button>
+</ion-content>

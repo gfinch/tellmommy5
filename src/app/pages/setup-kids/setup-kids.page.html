@@ -1,0 +1,38 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Setup Kids</ion-title>
+        <ion-buttons slot="end">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-fab *ngIf="!newKidEditorVisible" vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="showNewKidEditor()" color="tertiary">
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <ion-list>
+        <ion-item-group reorder="true" (ionItemReorder)="reorderKids($event)">
+            <ion-item *ngFor="let kid of kids" (click)="openKidEditPage(kid.id)">
+                <ion-avatar slot="start">
+                    <img [src]="kid.avatar">
+                </ion-avatar>
+                {{kid.name}}
+            </ion-item>
+        </ion-item-group>
+        <ion-item *ngIf="newKidEditorVisible">
+            <ion-input type="text" [(ngModel)]="newKid" placeholder="First Name"
+                       (keypress)="keypress($event.code)" (ionBlur)="blur()">
+            </ion-input>
+            <ion-button fill="clear" slot="end" (click)="saveNewKid()">
+                <ion-icon name="checkmark-circle" color="success" style="font-size:28px"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" slot="end" (click)="cancelNewKid()">
+                <ion-icon name="close-circle" color="danger" style="font-size:28px"></ion-icon>
+            </ion-button>
+        </ion-item>
+    </ion-list>
+</ion-content>
+

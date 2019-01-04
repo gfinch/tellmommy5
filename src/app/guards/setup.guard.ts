@@ -12,7 +12,7 @@ export class SetupGuard implements CanActivate {
 
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         // TODO - implement logic to check if already set up.
-        return this.navController.navigateRoot('/reward-system').then(() => {
+        return this.navController.navigateRoot('/choose-reward-system').then(() => {
             return false;
         });
     }

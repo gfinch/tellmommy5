@@ -9,7 +9,12 @@ const routes: Routes = [
     {path: 'login', loadChildren: './pages/login/login.module#LoginPageModule'},
     {path: 'forgot-pass', loadChildren: './pages/forgot-pass/forgot-pass.module#ForgotPassPageModule'},
     {path: 'home', loadChildren: './pages/home/home.module#HomePageModule', canActivate: [AuthGuard, SetupGuard]},
-    {path: 'reward-system', loadChildren: './pages/reward-system/reward-system.module#RewardSystemPageModule', canActivate: [AuthGuard]},
+    {
+        path: 'choose-reward-system',
+        loadChildren: './pages/choose-reward-system/choose-reward-system.module#ChooseRewardSystemPageModule',
+        canActivate: [AuthGuard]
+    },
+    {path: 'setup-kids', loadChildren: './pages/setup-kids/setup-kids.module#SetupKidsPageModule', canActivate: [AuthGuard]},
 ];
 
 @NgModule({

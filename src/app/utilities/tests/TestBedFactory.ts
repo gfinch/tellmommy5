@@ -13,6 +13,7 @@ import {EventsServiceMock} from '../../services/events/events.service.mock';
 
 export class TestBedFactory {
     static configure(declarations?: any[]) {
+
         return TestBed.configureTestingModule({
             declarations: declarations,
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -21,9 +22,9 @@ export class TestBedFactory {
             ],
             providers: [
                 Platform,
-                Location,
                 {provide: LocationStrategy, useClass: PathLocationStrategy},
                 {provide: APP_BASE_HREF, useValue: '/'},
+                Location,
                 NavController,
                 LoadingController,
                 AlertController,
