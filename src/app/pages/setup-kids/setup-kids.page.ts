@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {EventsService, EventTopic} from '../../services/events/events.service';
 import {Kid, KidService} from '../../services/kid/kid.service';
 import {AvatarService} from '../../services/avatar/avatar.service';
+import {NavController} from '@ionic/angular';
 
 @Component({
     selector: 'app-setup-kids',
@@ -10,21 +11,25 @@ import {AvatarService} from '../../services/avatar/avatar.service';
 })
 export class SetupKidsPage implements OnInit {
 
-    newKidEditorVisible = true;
+    newKidEditorVisible = false;
     kids: Kid[];
     newKid = '';
 
     constructor(private eventsService: EventsService,
                 private kidService: KidService,
-                private avatarService: AvatarService) {
+                private avatarService: AvatarService,
+                private navController: NavController) {
         this.kids = kidService.listKids();
         eventsService.subscribe(EventTopic.KidChanged, () => {
             this.kids = kidService.listKids();
+            if (this.kids.length == 0) {
+                this.showNewKidEditor();
+            }
         });
         eventsService.subscribe(EventTopic.ClearAll, () => {
             window.setTimeout(() => {
                 this.kids = kidService.listKids();
-                this.newKidEditorVisible = true;
+                this.showNewKidEditor();
             }, 500);
         });
     }
@@ -33,11 +38,17 @@ export class SetupKidsPage implements OnInit {
     }
 
     showNewKidEditor() {
+        console.log('Enabling new kid editor');
         this.newKidEditorVisible = true;
     }
 
-    saveNewKid() {
+    hideNewKidEditor() {
+        console.log('Disabling new kid editor');
         this.newKidEditorVisible = false;
+    }
+
+    saveNewKid() {
+        this.hideNewKidEditor();
         if (this.newKid) {
             const avatar = this.avatarService.randomAvatar();
             this.kidService.createKid(this.newKid, avatar);
@@ -47,11 +58,12 @@ export class SetupKidsPage implements OnInit {
 
     cancelNewKid() {
         this.newKid = null;
-        this.newKidEditorVisible = false;
+        this.hideNewKidEditor();
     }
 
     openKidEditPage(kidId) {
-        console.log('Go to new kid edit page.');
+        this.hideNewKidEditor();
+        this.navController.navigateForward('/setup-kid-edit/' + kidId);
     }
 
     reorderKids(event) {
@@ -63,9 +75,7 @@ export class SetupKidsPage implements OnInit {
     keypress(keyCode) {
         if (keyCode == 'Enter') {
             this.saveNewKid();
-            this.newKidEditorVisible = true;
-        } else if (keyCode == 'Esc') {
-            this.cancelNewKid();
+            this.showNewKidEditor();
         }
     }
 
@@ -73,6 +83,8 @@ export class SetupKidsPage implements OnInit {
         window.setTimeout(() => {
             if (this.newKidEditorVisible && this.newKid) {
                 this.saveNewKid();
+            } else {
+                this.hideNewKidEditor();
             }
         }, 100);
     }

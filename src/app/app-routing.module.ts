@@ -15,6 +15,16 @@ const routes: Routes = [
         canActivate: [AuthGuard]
     },
     {path: 'setup-kids', loadChildren: './pages/setup-kids/setup-kids.module#SetupKidsPageModule', canActivate: [AuthGuard]},
+    {
+        path: 'setup-kid-edit/:id',
+        loadChildren: './pages/setup-kid-edit/setup-kid-edit.module#SetupKidEditPageModule',
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'choose-avatar/:id',
+        loadChildren: './pages/choose-avatar/choose-avatar.module#ChooseAvatarPageModule',
+        canActivate: [AuthGuard]
+    }
 ];
 
 @NgModule({

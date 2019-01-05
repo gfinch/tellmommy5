@@ -35,6 +35,10 @@ export class KidService {
         return Array.from(this.kids.values());
     }
 
+    getKid(kidId: string): Kid {
+        return this.kids.get(kidId);
+    }
+
     createKid(name: string, avatar: string) {
         const id = UUID.random();
         const kid: Kid = {
@@ -53,6 +57,12 @@ export class KidService {
         existingKid.avatar = avatar;
 
         this.logTransaction(existingKid);
+    }
+
+    updateKidAvatar(id: string, avatar: string) {
+        const existingKid = this.kids.get(id);
+        const name = existingKid.name;
+        this.updateKid(id, name, avatar);
     }
 
     private logTransaction(kid: Kid) {
