@@ -22,13 +22,16 @@ export class AuthService {
     isSignedIn(): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
             if (this.familyId) {
+                console.log('Logged in as ' + this.familyId);
                 resolve(true);
             } else {
                 this.getFamilyIdFromCognito().then(cognitoFamilyId => {
                     if (cognitoFamilyId) {
                         this.familyId = cognitoFamilyId;
+                        console.log('Logged in as ' + this.familyId);
                         resolve(true);
                     } else {
+                        console.log('Not logged in!');
                         resolve(false);
                     }
                 });

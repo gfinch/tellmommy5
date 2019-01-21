@@ -21,9 +21,26 @@ export class StorageServiceMock extends StorageService {
         });
     }
 
+    waitGet(key, resolver, callback, maxWaitTime?: number) {
+        if (this.data.get(key) && resolver(this.data.get(key))) {
+            callback(null, true);
+        } else {
+            console.log('Waiting 100ms for ' + key);
+            let waitTime = maxWaitTime ? maxWaitTime : 3000;
+            waitTime = waitTime - 100;
+            if (waitTime <= 0) {
+                callback('Timeout waiting to get ' + key);
+            } else {
+                window.setTimeout(() => {
+                    this.waitGet(key, callback, waitTime);
+                }, 100);
+            }
+        }
+    }
+
     set(key: string, value: any): Promise<any> {
+        this.data.set(key, value);
         return new Promise<any>((resolve) => {
-            this.data.set(key, value);
             resolve(value);
         });
     }

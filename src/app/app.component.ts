@@ -41,4 +41,16 @@ export class AppComponent {
             console.log(err);
         });
     }
+
+    doRewardSystem() {
+        this.navController.navigateRoot('choose-reward-system');
+    }
+
+    doSetupKids() {
+        this.navController.navigateRoot('setup-kids');
+    }
+
+    doSetupChores() {
+        this.navController.navigateRoot('setup-chores');
+    }
 }

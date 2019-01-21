@@ -7,7 +7,10 @@ export enum EventTopic {
     RewardSystemTransaction = 'RewardSystemTransaction',
     RewardSystemChanged = 'RewardSystemChanged',
     KidTransaction = 'KidTransaction',
-    KidChanged = 'KidChanged'
+    KidChanged = 'KidChanged',
+    AccountTransaction = 'AccountTransaction',
+    AccountsChanged = 'AccountsChanged',
+    ChoreListChanged = 'ChoreListChanged'
 }
 
 export abstract class EventsService {

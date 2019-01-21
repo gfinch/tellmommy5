@@ -27,7 +27,7 @@ export class AvatarService {
     }
 
     randomAvatar(): string {
-        const index = Random.randomInt(0, 50);
+        const index = Random.randomInt(0, 49);
         return this.avatars[index];
     }
 }

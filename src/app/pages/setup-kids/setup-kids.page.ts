@@ -3,6 +3,7 @@ import {EventsService, EventTopic} from '../../services/events/events.service';
 import {Kid, KidService} from '../../services/kid/kid.service';
 import {AvatarService} from '../../services/avatar/avatar.service';
 import {NavController} from '@ionic/angular';
+import {ChoreService} from '../../services/chore/chore.service';
 
 @Component({
     selector: 'app-setup-kids',
@@ -18,23 +19,30 @@ export class SetupKidsPage implements OnInit {
     constructor(private eventsService: EventsService,
                 private kidService: KidService,
                 private avatarService: AvatarService,
-                private navController: NavController) {
+                private navController: NavController,
+                private choreService: ChoreService) {
         this.kids = kidService.listKids();
+        this.listChores();
+        this.refreshKids();
         eventsService.subscribe(EventTopic.KidChanged, () => {
-            this.kids = kidService.listKids();
-            if (this.kids.length == 0) {
-                this.showNewKidEditor();
-            }
+            this.refreshKids();
         });
         eventsService.subscribe(EventTopic.ClearAll, () => {
             window.setTimeout(() => {
-                this.kids = kidService.listKids();
-                this.showNewKidEditor();
+                this.refreshKids();
             }, 500);
         });
     }
 
     ngOnInit() {
+    }
+
+    listChores() {
+        this.choreService.listChores().then(chores => {
+            chores.forEach(chore => {
+                console.log(chore.name);
+            });
+        });
     }
 
     showNewKidEditor() {
@@ -47,11 +55,18 @@ export class SetupKidsPage implements OnInit {
         this.newKidEditorVisible = false;
     }
 
+    refreshKids() {
+        this.kids = this.kidService.listKids();
+        if (this.kids.length == 0) {
+            this.showNewKidEditor();
+        }
+    }
+
     saveNewKid() {
         this.hideNewKidEditor();
         if (this.newKid) {
             const avatar = this.avatarService.randomAvatar();
-            this.kidService.createKid(this.newKid, avatar);
+            const kidId = this.kidService.createKid(this.newKid, avatar);
         }
         this.newKid = null;
     }

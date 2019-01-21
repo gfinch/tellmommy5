@@ -7,6 +7,18 @@
                         <ion-icon name="log-out" slot="start"></ion-icon>
                         <ion-label>Sign Out</ion-label>
                     </ion-item>
+                    <ion-item tappable (click)="doRewardSystem()">
+                        <ion-icon name="logo-usd" slot="start"></ion-icon>
+                        <ion-label>Choose Reward System</ion-label>
+                    </ion-item>
+                    <ion-item tappable (click)="doSetupKids()">
+                        <ion-icon name="contacts" slot="start"></ion-icon>
+                        <ion-label>Setup Kids</ion-label>
+                    </ion-item>
+                    <ion-item tappable (click)="doSetupChores()">
+                        <ion-icon name="hammer" slot="start"></ion-icon>
+                        <ion-label>Setup Chores</ion-label>
+                    </ion-item>
                 </ion-menu-toggle>
             </ion-list>
         </ion-content>

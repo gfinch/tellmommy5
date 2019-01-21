@@ -1,6 +1,6 @@
 import {TestBed} from '@angular/core/testing';
 
-import {Transaction, TransactionService, TransactionType} from './transaction.service';
+import {Transaction, TransactionAction, TransactionService, TransactionType} from './transaction.service';
 import {StorageServiceMock} from '../storage/storage.service.mock';
 import {AmplifyServiceMock} from '../amplify/amplify.service.mock';
 import {EventsServiceMock} from '../events/events.service.mock';
@@ -16,7 +16,7 @@ describe('TransactionService', () => {
 
     describe('retrieve transactions', () => {
         it('should get a value from a mutable entity map.', () => {
-            const expected = new Transaction(TransactionType.RewardSystem, 10, '123', {'hello': 'world'});
+            const expected = new Transaction(TransactionType.RewardSystem, TransactionAction.Create, 10, '123', {'hello': 'world'});
             const map = new Map([['123', expected]]);
             const storageService = new StorageServiceMock(new Map([['Transaction_RewardSystem', map]]));
             const transactionService = new TransactionService(

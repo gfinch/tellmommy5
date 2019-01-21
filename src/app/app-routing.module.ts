@@ -24,6 +24,11 @@ const routes: Routes = [
         path: 'choose-avatar/:id',
         loadChildren: './pages/choose-avatar/choose-avatar.module#ChooseAvatarPageModule',
         canActivate: [AuthGuard]
+    },
+    {
+        path: 'setup-chores',
+        loadChildren: './pages/setup-chores/setup-chores.module#SetupChoresPageModule',
+        canActivate: [AuthGuard]
     }
 ];
 

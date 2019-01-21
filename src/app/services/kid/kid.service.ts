@@ -1,12 +1,15 @@
 import {Injectable} from '@angular/core';
-import {Transaction, TransactionService, TransactionType} from '../transaction/transaction.service';
+import {Transaction, TransactionAction, TransactionService, TransactionType} from '../transaction/transaction.service';
 import {EventsService, EventTopic} from '../events/events.service';
 import {UUID} from '../../utilities/uuid/uuid';
+import {AccountService} from '../account/account.service';
+import {RewardSystemService} from '../reward-system/reward-system.service';
 
 export class Kid {
     id: string;
     name: string;
     avatar: string;
+    deleted: boolean;
     lastUpdated: number;
 }
 
@@ -19,15 +22,25 @@ export class KidService {
     lastUpdated = -1;
 
     constructor(private transactionService: TransactionService,
-                private eventsService: EventsService) {
+                private eventsService: EventsService,
+                private accountService: AccountService,
+                private rewardSystemService: RewardSystemService) {
         console.log('Instantiating KidService');
         this.kids = new Map<string, Kid>();
-        eventsService.subscribe(EventTopic.KidTransaction, (transaction: Transaction) => {
-            this.handleKidTransactionEvent(transaction);
+        this.eventsService.subscribe(EventTopic.KidTransaction, (transactions: Transaction[]) => {
+            transactions.forEach(transaction => {
+                this.handleKidTransactionEvent(transaction);
+            });
         });
-        eventsService.subscribe(EventTopic.ClearAll, () => {
+
+        this.eventsService.subscribe(EventTopic.RewardSystemChanged, () => {
+            this.createDefaultAccounts();
+        });
+
+        this.eventsService.subscribe(EventTopic.ClearAll, () => {
             this.kids.clear();
         });
+
         this.refreshFromService();
     }
 
@@ -39,16 +52,18 @@ export class KidService {
         return this.kids.get(kidId);
     }
 
-    createKid(name: string, avatar: string) {
+    createKid(name: string, avatar: string): string {
         const id = UUID.random();
         const kid: Kid = {
             id: id,
             name: name,
             avatar: avatar,
+            deleted: false,
             lastUpdated: -1
         };
 
-        this.logTransaction(kid);
+        this.logTransaction(kid, TransactionAction.Create);
+        return id;
     }
 
     updateKid(id: string, name: string, avatar: string) {
@@ -56,7 +71,7 @@ export class KidService {
         existingKid.name = name;
         existingKid.avatar = avatar;
 
-        this.logTransaction(existingKid);
+        this.logTransaction(existingKid, TransactionAction.Update);
     }
 
     updateKidAvatar(id: string, avatar: string) {
@@ -65,9 +80,16 @@ export class KidService {
         this.updateKid(id, name, avatar);
     }
 
-    private logTransaction(kid: Kid) {
+    deleteKid(id: string) {
+        const existingKid = this.kids.get(id);
+        existingKid.deleted = true;
+
+        this.logTransaction(existingKid, TransactionAction.Delete);
+    }
+
+    private logTransaction(kid: Kid, action: TransactionAction) {
         this.transactionService
-            .logTransaction(TransactionType.Kid, kid.id, kid)
+            .logTransaction(TransactionType.Kid, action, kid.id, kid, true)
             .catch(err => {
                 console.log('Unable to create or update kid: ' + JSON.stringify(kid) + ' because ' + err);
             });
@@ -81,14 +103,29 @@ export class KidService {
             });
     }
 
+    private createDefaultAccounts() {
+        const rewardSystem = this.rewardSystemService.rewardSystem;
+        this.kids.forEach(kid => {
+            this.accountService.createDefaultAccounts(kid.id, rewardSystem);
+        });
+    }
+
     private handleKidTransactionEvent(transaction: Transaction) {
         const entityId = transaction.entityId;
         const timestamp = transaction.transactionTimestamp;
         const existingKid = this.kids.get(entityId);
+        if (transaction.transactionTimestamp > this.lastUpdated) {
+            this.lastUpdated = transaction.transactionTimestamp;
+        }
         if (!existingKid || timestamp > existingKid.lastUpdated) {
             const newKid = transaction.entity as Kid;
             newKid.lastUpdated = transaction.transactionTimestamp;
-            this.kids.set(entityId, newKid);
+            if (newKid.deleted) {
+                this.kids.delete(entityId);
+            } else {
+                this.kids.set(entityId, newKid);
+            }
+            this.createDefaultAccounts();
             this.eventsService.publish(EventTopic.KidChanged, newKid);
         } else {
             console.log('Ignoring kid transaction because the timestamp of the transaction (' + transaction.transactionTimestamp

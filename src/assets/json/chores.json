@@ -1,0 +1,425 @@
+[ {
+  "id" : "263920ef-89d5-45f8-bc04-60ab6a506d37",
+  "name" : "Clean the bathroom",
+  "category" : "Bedroom",
+  "value" : "40",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/009-cabinet.svg"
+}, {
+  "id" : "373ebd62-d4cc-464f-a1f7-932fa38acfc7",
+  "name" : "Make your bed",
+  "category" : "Bedroom",
+  "value" : "10",
+  "author" : "turkkub",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/008-bed.svg"
+}, {
+  "id" : "3b79ed78-190a-41a0-bca2-d4580e9232ac",
+  "name" : "Take a shower",
+  "category" : "Bedroom",
+  "value" : "10",
+  "author" : "turkkub",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/007-shower.svg"
+}, {
+  "id" : "787c32e1-26a5-4f49-8937-4cf2d18d0a53",
+  "name" : "Clean bedroom",
+  "category" : "Bedroom",
+  "value" : "40",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/010-bed.svg"
+}, {
+  "id" : "cabfe6ab-1047-40eb-913f-b66285118c0b",
+  "name" : "Clean the bathtub",
+  "category" : "Bedroom",
+  "value" : "50",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/021-shower.svg"
+}, {
+  "id" : "d4009562-beb3-4393-a215-58c3fd24b337",
+  "name" : "Brush your teeth",
+  "category" : "Bedroom",
+  "value" : "10",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/009-toothbrush.svg"
+}, {
+  "id" : "da7e4a51-6377-46bd-a47d-7961cfdc9b0c",
+  "name" : "Say your prayers",
+  "category" : "Bedroom",
+  "value" : "10",
+  "author" : "Smashicons",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/018-people.svg"
+}, {
+  "id" : "ec10481b-5a50-4f33-8469-9e200305ee55",
+  "name" : "Clean the toilet",
+  "category" : "Bedroom",
+  "value" : "50",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/023-toilet.svg"
+}, {
+  "id" : "07738172-3410-4601-a92d-a08e422d847d",
+  "name" : "Clean the microwave",
+  "category" : "Kitchen",
+  "value" : "30",
+  "author" : "monkik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/016-microwave.svg"
+}, {
+  "id" : "20d0f855-b253-45d6-862b-e610e4ecd074",
+  "name" : "Put away the groceries",
+  "category" : "Kitchen",
+  "value" : "10",
+  "author" : "Smashicons",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/001-groceries.svg"
+}, {
+  "id" : "24b14bf4-b808-47b1-96f4-bcf9367515bc",
+  "name" : "Clear the table",
+  "category" : "Kitchen",
+  "value" : "10",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/012-dining-table.svg"
+}, {
+  "id" : "2d156407-f9e0-498b-a5aa-2366e714bdbd",
+  "name" : "Sweep the floor",
+  "category" : "Kitchen",
+  "value" : "10",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/036-broom.svg"
+}, {
+  "id" : "2f30c747-f3d1-4be4-8960-44c92c34b36f",
+  "name" : "Make breakfast",
+  "category" : "Kitchen",
+  "value" : "20",
+  "author" : "Nikita Golubev",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/013-cereals.svg"
+}, {
+  "id" : "30c5dc5c-aaa0-4cdf-a197-d44e8322f85a",
+  "name" : "Set the table",
+  "category" : "Kitchen",
+  "value" : "10",
+  "author" : "Nikita Golubev",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/011-table.svg"
+}, {
+  "id" : "40f95a14-cb09-4d2f-aa5b-473dcca9b936",
+  "name" : "Load the dishwasher",
+  "category" : "Kitchen",
+  "value" : "10",
+  "author" : "Smashicons",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/014-dishwasher.svg"
+}, {
+  "id" : "513aab06-6a32-4975-8060-029a5cfc3be5",
+  "name" : "Clean the counters",
+  "category" : "Kitchen",
+  "value" : "10",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/004-wipe.svg"
+}, {
+  "id" : "63e5c8e1-29bb-4d82-9485-34d731514809",
+  "name" : "Make dinner",
+  "category" : "Kitchen",
+  "value" : "30",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/011-spaghetti.svg"
+}, {
+  "id" : "935d8397-3054-4b4a-95b4-2b7473238bd0",
+  "name" : "Make lunch",
+  "category" : "Kitchen",
+  "value" : "20",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/012-sandwich.svg"
+}, {
+  "id" : "a5189b9a-a0a9-4300-91fb-fc8bfdb92d9e",
+  "name" : "Mop the floor",
+  "category" : "Kitchen",
+  "value" : "30",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/010-mop.svg"
+}, {
+  "id" : "af7dc1ce-8be6-4f26-8cd9-6a8628bc46ae",
+  "name" : "Clean the kitchen",
+  "category" : "Kitchen",
+  "value" : "40",
+  "author" : "monkik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/017-kitchen.svg"
+}, {
+  "id" : "b01f1a43-b41c-4a50-9743-e37f16696c86",
+  "name" : "Clean the refrigerator",
+  "category" : "Kitchen",
+  "value" : "50",
+  "author" : "Good Ware",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/014-fridge.svg"
+}, {
+  "id" : "d04fbb3d-8f54-4ec7-b6a4-91dc896c7031",
+  "name" : "Wash the dishes",
+  "category" : "Kitchen",
+  "value" : "10",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/015-sink.svg"
+}, {
+  "id" : "df5e38e7-eab7-47f1-98b7-e391e4f1ecce",
+  "name" : "Empty the trash",
+  "category" : "Kitchen",
+  "value" : "10",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/038-garbage.svg"
+}, {
+  "id" : "e933eb64-c42c-4e82-830c-c6431a272dc8",
+  "name" : "Empty the dishwasher",
+  "category" : "Kitchen",
+  "value" : "10",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/018-dishwasher.svg"
+}, {
+  "id" : "feac86b8-48f1-44ae-bb39-234dbc4777db",
+  "name" : "Clean the stove",
+  "category" : "Kitchen",
+  "value" : "50",
+  "author" : "Roundicons",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/015-cooking.svg"
+}, {
+  "id" : "3b3c3560-ad57-47f2-891c-c876a125f97c",
+  "name" : "Pick up toys",
+  "category" : "Misc",
+  "value" : "20",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/001-blocks.svg"
+}, {
+  "id" : "5b2f080a-7c98-4fa1-8a1d-f554f6ec4a15",
+  "name" : "Fold your clothes",
+  "category" : "Misc",
+  "value" : "20",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/047-laundry.svg"
+}, {
+  "id" : "5ca09a51-ff25-41ce-8d49-88fb11da07ee",
+  "name" : "Wash your clothes",
+  "category" : "Misc",
+  "value" : "40",
+  "author" : "Nhor Phai",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/002-laundry.svg"
+}, {
+  "id" : "5e6e67f7-8c02-4b46-80aa-344f08c412c7",
+  "name" : "Ironing",
+  "category" : "Misc",
+  "value" : "10",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/045-iron.svg"
+}, {
+  "id" : "8e73ea35-f3ba-40cb-8602-ce68a7d0cb73",
+  "name" : "Water the plants",
+  "category" : "Misc",
+  "value" : "10",
+  "author" : "Nikita Golubev",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/001-plant.svg"
+}, {
+  "id" : "c7339a50-d672-4be3-be41-95855c48bbea",
+  "name" : "Wash the windows",
+  "category" : "Misc",
+  "value" : "50",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/029-glass-cleaning.svg"
+}, {
+  "id" : "d8b2fdcb-44af-49db-ab9e-812c74259226",
+  "name" : "Exercise",
+  "category" : "Misc",
+  "value" : "20",
+  "author" : "monkik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/003-exercise.svg"
+}, {
+  "id" : "ea64f03e-6532-42fc-b303-5988c9337a20",
+  "name" : "Feed the animals",
+  "category" : "Misc",
+  "value" : "10",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/barn.svg"
+}, {
+  "id" : "4cc6416d-ea43-4607-a7b6-079859d9f827",
+  "name" : "Clean the study",
+  "category" : "Rooms",
+  "value" : "10",
+  "author" : "Smashicons",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/004-bookshelf.svg"
+}, {
+  "id" : "544b7481-55d0-403a-9192-28f1b2fec7dd",
+  "name" : "Clean the living room",
+  "category" : "Rooms",
+  "value" : "20",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/001-room.svg"
+}, {
+  "id" : "60760d2d-9b27-4c27-a0e7-77e91f873959",
+  "name" : "Clean the front room",
+  "category" : "Rooms",
+  "value" : "10",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/007-living-room.svg"
+}, {
+  "id" : "7a738b9d-1b87-4bd2-8fb8-d4a63af691d3",
+  "name" : "Vacuum the carpet",
+  "category" : "Rooms",
+  "value" : "10",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/006-house-things.svg"
+}, {
+  "id" : "92377eb1-9504-4753-a91e-c4fa1cf6e59b",
+  "name" : "Clean the office",
+  "category" : "Rooms",
+  "value" : "10",
+  "author" : "Smashicons",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/005-desk.svg"
+}, {
+  "id" : "cb0d9fbb-eb3a-4450-b92e-6525a049d09c",
+  "name" : "Clean the garage",
+  "category" : "Rooms",
+  "value" : "100",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/006-garage.svg"
+}, {
+  "id" : "fd8e3154-0215-45d5-853f-89de59dd5cdd",
+  "name" : "Dust the furniture",
+  "category" : "Rooms",
+  "value" : "10",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/010-dusting.svg"
+}, {
+  "id" : "6602c8a1-04be-4277-8c18-f1cf7906475b",
+  "name" : "Read a book",
+  "category" : "Talents",
+  "value" : "10",
+  "author" : "Smashicons",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/005-book.svg"
+}, {
+  "id" : "67487aa7-c1d6-4173-b8bc-b8f8e25c80cf",
+  "name" : "Practice instrument",
+  "category" : "Talents",
+  "value" : "20",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/005-trumpet.svg"
+}, {
+  "id" : "a57484e4-52c3-4940-b519-42c1c397aac1",
+  "name" : "Practice piano",
+  "category" : "Talents",
+  "value" : "20",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/004-piano.svg"
+}, {
+  "id" : "0292b51d-d3c7-4ffd-ab90-3c57cc1aaef4",
+  "name" : "Do your homework",
+  "category" : "Talents",
+  "value" : "20",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/003-blackboard.svg"
+}, {
+  "id" : "20054d61-9ae4-4396-b5aa-084259474b2f",
+  "name" : "Shovel snow",
+  "category" : "Yardwork",
+  "value" : "30",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/002-shovel.svg"
+}, {
+  "id" : "38dfd4a0-c6a2-48ed-b919-edc0849a274c",
+  "name" : "Clean out the car",
+  "category" : "Yardwork",
+  "value" : "10",
+  "author" : "Pixel Buddha",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/003-car.svg"
+}, {
+  "id" : "54cd6e8f-8d76-4f5e-8da6-2197f42e0335",
+  "name" : "Mow the lawn",
+  "category" : "Yardwork",
+  "value" : "50",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/037-lawn-mower.svg"
+}, {
+  "id" : "6dcc4b47-9f61-46b0-916b-e84cc51e294d",
+  "name" : "Do yard work",
+  "category" : "Yardwork",
+  "value" : "70",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/barrow.svg"
+}, {
+  "id" : "8b891cee-ba15-451f-a1cd-e1765944d050",
+  "name" : "Weed the garden",
+  "category" : "Yardwork",
+  "value" : "60",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/carrot.svg"
+}, {
+  "id" : "c011f79f-6782-410e-bafb-c8cca5b8230d",
+  "name" : "Wash the car",
+  "category" : "Yardwork",
+  "value" : "30",
+  "author" : "Linector",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/003-car-wash.svg"
+}, {
+  "id" : "edf2cd76-cb51-4b19-85ef-71eee0016a3c",
+  "name" : "Rake the leaves",
+  "category" : "Yardwork",
+  "value" : "60",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/039-rake.svg"
+}, {
+  "id" : "fa83db25-d1ff-4011-adf3-4b736e30072e",
+  "name" : "Water the garden",
+  "category" : "Yardwork",
+  "value" : "20",
+  "author" : "Freepik",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/hose.svg"
+}, {
+  "id" : "45e89377-0320-44a0-a9c5-342b6170374e",
+  "name" : "Clean the basement",
+  "category" : "Rooms",
+  "value" : "60",
+  "author" : "Smashicons",
+  "sort" : 9999999,
+  "icon" : "/assets/chores/stairs.svg"
+} ]

@@ -8,10 +8,13 @@ import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {AppComponent} from './app.component';
 import {AmplifyService} from './services/amplify/amplify.service';
 import {StorageService} from './services/storage/storage.service';
+import {EventsService} from './services/events/events.service';
+import {EventsServiceMock} from './services/events/events.service.mock';
 
 describe('AppComponent', () => {
 
-    let statusBarSpy, splashScreenSpy, platformReadySpy, platformSpy, amplifySpy, storageSpy, navSpy;
+    let statusBarSpy, splashScreenSpy, platformReadySpy, platformSpy,
+        amplifySpy, storageSpy, navSpy, eventsSpy;
 
     beforeEach(async(() => {
         statusBarSpy = jasmine.createSpyObj('StatusBar', ['styleDefault']);
@@ -21,6 +24,7 @@ describe('AppComponent', () => {
         amplifySpy = jasmine.createSpyObj('AmplifyService', ['signUp']);
         storageSpy = jasmine.createSpyObj('StorageService', ['get']);
         navSpy = jasmine.createSpyObj('NavController', ['navigateForward']);
+        eventsSpy = new EventsServiceMock();
 
         TestBed.configureTestingModule({
             declarations: [AppComponent],
@@ -31,8 +35,9 @@ describe('AppComponent', () => {
                 {provide: Platform, useValue: platformSpy},
                 {provide: AmplifyService, useValue: amplifySpy},
                 {provide: StorageService, useValue: storageSpy},
-                {provide: NavController, useValue: navSpy}
-            ],
+                {provide: NavController, useValue: navSpy},
+                {provide: EventsService, useValue: eventsSpy},
+            ]
         }).compileComponents();
     }));
 

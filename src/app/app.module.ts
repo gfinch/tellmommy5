@@ -12,11 +12,12 @@ import {AmplifyService, AmplifyServiceAWS} from './services/amplify/amplify.serv
 import {StorageService, StorageServiceIonic} from './services/storage/storage.service';
 import {EventsService, EventsServiceIonic} from './services/events/events.service';
 import {IonicStorageModule} from '@ionic/storage';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
     declarations: [AppComponent],
     entryComponents: [],
-    imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, IonicStorageModule.forRoot()],
+    imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, IonicStorageModule.forRoot(), HttpClientModule],
     providers: [
         StatusBar,
         SplashScreen,

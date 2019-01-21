@@ -1,6 +1,9 @@
 <ion-header>
     <ion-toolbar>
         <ion-title>Edit {{kidToEdit.name}}</ion-title>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
         <ion-buttons slot="end">
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
@@ -19,15 +22,56 @@
             </ion-col>
             <ion-col size="8">
                 <ion-label position="stacked">First Name</ion-label>
-                <ion-input type="text" [(ngModel)]="kidToEdit.name">
+                <ion-input type="text" [(ngModel)]="kidToEdit.name" (blur)="blur()" (focus)="focus()">
                 </ion-input>
-                <div style="width:100%">
-                    <ion-button slot="end" color="success" (click)="okButton()">OK</ion-button>
-                    <ion-button slot="end" color="danger" (click)="cancelButton()">Cancel</ion-button>
+                <div float-left>
+                    <ion-button slot="start" color="success" expand="block" size="small"
+                                (click)="saveButton()">Ok
+                    </ion-button>
+                </div>
+                <div float-right>
+                    <ion-button slot="end" color="danger" expand="block" size="small"
+                                (click)="deleteButton()">Delete {{kidToEdit.name}}</ion-button>
                 </div>
             </ion-col>
         </ion-row>
     </ion-grid>
+    <ion-list>
+        <ion-item-divider *ngIf="rewardSystem !== rewardSystems.None">
+            <ion-label>
+                Reward Accounts
+            </ion-label>
+            <ion-fab-button (click)="showAccountHelp()" size="small" slot="end">
+                <ion-icon name="help"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button (click)="addAccount()" size="small" slot="end">
+                <ion-icon name="add"></ion-icon>
+            </ion-fab-button>
+        </ion-item-divider>
+        <ion-item-sliding *ngFor="let account of accounts" [id]="account.account.accountId">
+            <ion-item *ngIf="account.editing">
+                <ion-input type="text" [(ngModel)]="account.account.name" (blur)="doUpdateAccount(account)"
+                           (keypress)="keypressAccount($event.code, account)" placeholder="Account Name">
+                </ion-input>
+                <ion-badge slot="end">{{account.split}}%</ion-badge>
+            </ion-item>
+            <ion-item *ngIf="account.editing">
+                <ion-range [(ngModel)]="account.split" min="0" max="100" pin="true"
+                           (ionChange)="updateSplits(account)"
+                           (ionBlur)="doUpdateAccount(account)">
+                    <ion-label slot="start">0%</ion-label>
+                    <ion-label slot="end">100%</ion-label>
+                </ion-range>
+            </ion-item>
+            <ion-item *ngIf="!account.editing" (click)="startEditingAccount(account)">
+                {{account.account.name}}
+                <ion-badge slot="end">{{account.split}}%</ion-badge>
+            </ion-item>
+            <ion-item-options class="sliding-enabled" *ngIf="!account.editing && accounts.length > 1">
+                <ion-item-option color="danger" (click)="doDeleteAccount(account)">Delete</ion-item-option>
+            </ion-item-options>
+        </ion-item-sliding>
+    </ion-list>
 </ion-content>
 
 

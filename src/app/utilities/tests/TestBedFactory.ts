@@ -1,6 +1,6 @@
 import {TestBed} from '@angular/core/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {RouterModule} from '@angular/router';
+import {ActivatedRoute, Data, Params, RouterModule} from '@angular/router';
 import {AlertController, LoadingController, NavController, Platform} from '@ionic/angular';
 import {APP_BASE_HREF, Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import {AuthService} from '../../services/auth/auth.service';
@@ -31,7 +31,35 @@ export class TestBedFactory {
                 AuthService,
                 {provide: AmplifyService, useClass: AmplifyServiceMock},
                 {provide: StorageService, useClass: StorageServiceMock},
-                {provide: EventsService, useClass: EventsServiceMock}
+                {provide: EventsService, useClass: EventsServiceMock},
+                {
+                    provide: ActivatedRoute, useValue: {
+                        data: {
+                            subscribe: (fn: (value: Data) => void) => fn({
+                                company: '',
+                            }),
+                        },
+                        params: {
+                            subscribe: (fn: (value: Params) => void) => fn({
+                                tab: 0,
+                            }),
+                        },
+                        snapshot: {
+                            paramMap: new Map([['id', '123']]),
+                            url: [
+                                {
+                                    path: 'foo',
+                                },
+                                {
+                                    path: 'bar',
+                                },
+                                {
+                                    path: 'baz',
+                                },
+                            ],
+                        },
+                    }
+                }
             ]
         }).compileComponents();
     }

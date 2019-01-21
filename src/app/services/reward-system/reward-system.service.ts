@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Transaction, TransactionService, TransactionType} from '../transaction/transaction.service';
+import {Transaction, TransactionAction, TransactionService, TransactionType} from '../transaction/transaction.service';
 import {EventsService, EventTopic} from '../events/events.service';
 
 export enum RewardSystem {
@@ -22,8 +22,10 @@ export class RewardSystemService {
     constructor(private transactionService: TransactionService,
                 private eventsService: EventsService) {
         console.log('Instantiating RewardSystemService');
-        eventsService.subscribe(EventTopic.RewardSystemTransaction, (transaction: Transaction) => {
-            this.handleRewardSystemTransactionEvent(transaction);
+        eventsService.subscribe(EventTopic.RewardSystemTransaction, (transactions: Transaction[]) => {
+            transactions.forEach(transaction => {
+                this.handleRewardSystemTransactionEvent(transaction);
+            });
         });
         eventsService.subscribe(EventTopic.ClearAll, () => {
             this.rewardSystem = RewardSystem.Money;
@@ -58,8 +60,8 @@ export class RewardSystemService {
 
     updateRewardSystem(rewardSystem: RewardSystem) {
         this.transactionService
-            .logTransaction(TransactionType.RewardSystem,
-                this.entityId, {rewardSystem: rewardSystem})
+            .logTransaction(TransactionType.RewardSystem, TransactionAction.Upsert,
+                this.entityId, {rewardSystem: rewardSystem}, true)
             .catch(err => {
                 console.log('Failed to log transaction because ' + err);
             });
