@@ -78,7 +78,7 @@ export class SetupKidsPage implements OnInit {
 
     openKidEditPage(kidId) {
         this.hideNewKidEditor();
-        this.navController.navigateForward('/setup-kid-edit/' + kidId);
+        this.navController.navigateForward('/tellmommy/tabs/setup-kids/kids/' + kidId);
     }
 
     reorderKids(event) {

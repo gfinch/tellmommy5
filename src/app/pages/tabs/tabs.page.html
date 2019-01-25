@@ -1,0 +1,16 @@
+<ion-tabs>
+    <ion-tab-bar slot="bottom">
+        <ion-tab-button tab="choose-reward-system">
+            <ion-icon name="logo-usd"></ion-icon>
+            <ion-label>Reward System</ion-label>
+        </ion-tab-button>
+        <ion-tab-button tab="setup-kids">
+            <ion-icon name="contacts"></ion-icon>
+            <ion-label>Kids</ion-label>
+        </ion-tab-button>
+        <ion-tab-button tab="setup-chores" [disabled]="choresDisabled">
+            <ion-icon name="hammer"></ion-icon>
+            <ion-label>Chores</ion-label>
+        </ion-tab-button>
+    </ion-tab-bar>
+</ion-tabs>

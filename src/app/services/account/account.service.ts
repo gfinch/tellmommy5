@@ -28,7 +28,8 @@ export class AccountService {
     private defaultAccounts: Map<string, Map<string, number>> = new Map([
         [RewardSystem.Money, new Map([['Savings', 50], ['Fun Money', 40], ['Charity', 10]])],
         [RewardSystem.Time, new Map([['Screen Time', 50], ['Play Time', 50]])],
-        [RewardSystem.Points, new Map([['Points', 100]])]
+        [RewardSystem.Points, new Map([['Points', 100]])],
+        [RewardSystem.None, new Map()]
     ]);
 
     // Need to figure out when to build default accounts ... when kid is created and when reward system is changed??
@@ -53,28 +54,30 @@ export class AccountService {
     }
 
     createDefaultAccounts(kidId: string, rewardSystem: RewardSystem) {
-        if (!this.defaultsMap.get(rewardSystem) || !this.defaultsMap.get(rewardSystem).get(kidId)) {
-            const defaultMapForSystem = this.defaultsMap.get(rewardSystem) || new Map();
-            defaultMapForSystem.set(kidId, true);
-            this.defaultsMap.set(rewardSystem, defaultMapForSystem);
+        if (rewardSystem !== RewardSystem.None) {
+            if (!this.defaultsMap.get(rewardSystem) || !this.defaultsMap.get(rewardSystem).get(kidId)) {
+                const defaultMapForSystem = this.defaultsMap.get(rewardSystem) || new Map();
+                defaultMapForSystem.set(kidId, true);
+                this.defaultsMap.set(rewardSystem, defaultMapForSystem);
 
-            if (!this.kidAccountMap.get(rewardSystem) || !this.kidAccountMap.get(rewardSystem).get(kidId)) {
-                const group = UUID.random();
-                const accounts = Array.from(this.defaultAccounts.get(rewardSystem).entries()).map(entry => {
-                    const name = entry[0];
-                    const split = entry[1];
-                    const newAccount = this.buildAccountForKid(rewardSystem, kidId, name, split);
-                    this.addAccountFromTransaction(newAccount, -1, newAccount.accountId);
-                    return newAccount;
-                });
+                if (!this.kidAccountMap.get(rewardSystem) || !this.kidAccountMap.get(rewardSystem).get(kidId)) {
+                    const group = UUID.random();
+                    const accounts = Array.from(this.defaultAccounts.get(rewardSystem).entries()).map(entry => {
+                        const name = entry[0];
+                        const split = entry[1];
+                        const newAccount = this.buildAccountForKid(rewardSystem, kidId, name, split);
+                        this.addAccountFromTransaction(newAccount, -1, newAccount.accountId);
+                        return newAccount;
+                    });
 
-                const promises = accounts.map(account => {
-                    return this.logTransaction(account, TransactionAction.Create, false, group);
-                });
+                    const promises = accounts.map(account => {
+                        return this.logTransaction(account, TransactionAction.Create, false, group);
+                    });
 
-                Promise.all(promises).then(() => {
-                    return this.transactionService.commitTransactions(TransactionType.Account, group);
-                });
+                    Promise.all(promises).then(() => {
+                        return this.transactionService.commitTransactions(TransactionType.Account, group);
+                    });
+                }
             }
         }
     }

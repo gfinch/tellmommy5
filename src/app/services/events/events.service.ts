@@ -10,7 +10,9 @@ export enum EventTopic {
     KidChanged = 'KidChanged',
     AccountTransaction = 'AccountTransaction',
     AccountsChanged = 'AccountsChanged',
-    ChoreListChanged = 'ChoreListChanged'
+    ChoreListChanged = 'ChoreListChanged',
+    AssignmentTransaction = 'AssignmentTransaction',
+    AssignmentChanged = 'AssignmentChanged'
 }
 
 export abstract class EventsService {

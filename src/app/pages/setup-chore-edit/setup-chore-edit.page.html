@@ -1,0 +1,62 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>{{choreToEdit.name}}</ion-title>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-list>
+        <ion-list-header *ngIf="!isNoRewardSystem" text-wrap>
+            How much will you reward your child for doing this chore?
+        </ion-list-header>
+        <ion-item *ngIf="!isNoRewardSystem">
+            <ion-thumbnail slot="start">
+                <img [src]="choreToEdit.icon">
+            </ion-thumbnail>
+            <ion-input type="number" [(ngModel)]="choreValue"></ion-input>
+            <ion-note *ngIf="labelLeft" slot="start">{{editLabel}}</ion-note>
+            <ion-note *ngIf="!labelLeft" slot="end">{{editLabel}}</ion-note>
+        </ion-item>
+        <ion-item *ngIf="isNoRewardSystem">
+            <ion-thumbnail slot="start">
+                <img [src]="choreToEdit.icon">
+            </ion-thumbnail>
+            {{choreToEdit.name}}
+        </ion-item>
+        <ion-list-header text-wrap>
+            <div>
+                Who will do this chore?
+                <ion-button shape="round" (click)="selectAll()" slot="end">All</ion-button>
+            </div>
+        </ion-list-header>
+        <ion-item *ngFor="let kid of kidChecks">
+            <ion-checkbox color="primary" [(ngModel)]="kid.checked"></ion-checkbox>
+            <ion-label>{{kid.name}}</ion-label>
+        </ion-item>
+    </ion-list>
+    <ion-radio-group [(ngModel)]="choreFrequency">
+        <ion-item-divider>
+            <ion-label text-wrap>
+                How often should they do it?
+            </ion-label>
+            <ion-fab-button (click)="doShowFrequencyHelp()" size="small" slot="end">
+                <ion-icon name="help"></ion-icon>
+            </ion-fab-button>
+        </ion-item-divider>
+        <ion-item *ngFor="let frequency of frequencies" text-wrap>
+            <ion-label>
+                {{frequency.name}}
+            </ion-label>
+            <ion-radio [value]="frequency.id"></ion-radio>
+        </ion-item>
+        <ion-button shape="round" expand="full" size="large" (click)="doneWithPage()">
+            Save
+        </ion-button>
+    </ion-radio-group>
+</ion-content>

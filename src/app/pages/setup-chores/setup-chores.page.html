@@ -11,7 +11,27 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-list *ngIf="kids.size > 0">
+    <ion-list>
+        <ion-item-group *ngIf="choresAssignedToKids.length > 0">
+            <ion-item-divider>Assigned Chores</ion-item-divider>
+            <ion-item-sliding *ngFor="let assignment of choresAssignedToKids"
+                              (click)="chooseChore(assignment.chore)" [id]="assignment.chore.id">
+                <ion-item>
+                    <ion-thumbnail slot="start">
+                        <ion-img [src]="assignment.chore.icon"></ion-img>
+                    </ion-thumbnail>
+                    <ion-label>
+                        {{assignment.chore.name}}
+                        <div>
+                            {{assignment.frequency}} - {{assignment.kidsNames}}
+                        </div>
+                    </ion-label>
+                </ion-item>
+                <ion-item-options class="sliding-enabled">
+                    <ion-item-option color="danger" (click)="unassign(assignment)">Unassign</ion-item-option>
+                </ion-item-options>
+            </ion-item-sliding>
+        </ion-item-group>
         <ion-item-group *ngFor="let group of choreGroups">
             <ion-item-divider *ngIf="group.chores.length > 0" color="light" (click)="doToggleSection(group)">
                 {{group.groupName}}
@@ -31,18 +51,6 @@
         </ion-item-group>
     </ion-list>
 </ion-content>
-
-<ion-content padding *ngIf="kids.length == 0">
-    <ion-card color="primary">
-        <ion-card-header>
-            No Kids!
-        </ion-card-header>
-        <ion-card-content>
-            Ask your parents to go to the setup page and add you to the list.
-        </ion-card-content>
-    </ion-card>
-</ion-content>
-
 
 <!--
 

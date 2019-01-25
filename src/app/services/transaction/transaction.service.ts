@@ -7,7 +7,8 @@ import {UUID} from '../../utilities/uuid/uuid';
 export enum TransactionType {
     RewardSystem = 'RewardSystem',
     Kid = 'Kid',
-    Account = 'Account'
+    Account = 'Account',
+    Assignment = 'Assignment'
 }
 
 export enum TransactionAction {
@@ -52,12 +53,14 @@ export class TransactionService {
     transactionStructureMap: Map<TransactionType, TransactionStructure> = new Map([
         [TransactionType.RewardSystem, TransactionStructure.Mutable],
         [TransactionType.Kid, TransactionStructure.Mutable],
-        [TransactionType.Account, TransactionStructure.Mutable]
+        [TransactionType.Account, TransactionStructure.Mutable],
+        [TransactionType.Assignment, TransactionStructure.Mutable]
     ]);
     transactionTopicMap: Map<TransactionType, EventTopic> = new Map([
         [TransactionType.RewardSystem, EventTopic.RewardSystemTransaction],
         [TransactionType.Kid, EventTopic.KidTransaction],
-        [TransactionType.Account, EventTopic.AccountTransaction]
+        [TransactionType.Account, EventTopic.AccountTransaction],
+        [TransactionType.Assignment, EventTopic.AssignmentTransaction]
     ]);
 
     constructor(private amplifyService: AmplifyService,
@@ -198,8 +201,10 @@ export class TransactionService {
                                 console.log('Creating a new array for ' + storageKey);
                                 emptyTransactions = [];
                             }
-                            this.storageService.set(storageKey, emptyTransactions);
-                            resolve(emptyTransactions);
+                            this.storageService.set(storageKey, emptyTransactions).then(() => {
+                                this.transactionMap.set(transactionType, emptyTransactions);
+                                resolve(emptyTransactions);
+                            });
                         }
                     }).catch(err => {
                     reject(err);

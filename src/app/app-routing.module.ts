@@ -8,26 +8,13 @@ const routes: Routes = [
     {path: 'register', loadChildren: './pages/register/register.module#RegisterPageModule'},
     {path: 'login', loadChildren: './pages/login/login.module#LoginPageModule'},
     {path: 'forgot-pass', loadChildren: './pages/forgot-pass/forgot-pass.module#ForgotPassPageModule'},
-    {path: 'home', loadChildren: './pages/home/home.module#HomePageModule', canActivate: [AuthGuard, SetupGuard]},
     {
-        path: 'choose-reward-system',
-        loadChildren: './pages/choose-reward-system/choose-reward-system.module#ChooseRewardSystemPageModule',
-        canActivate: [AuthGuard]
-    },
-    {path: 'setup-kids', loadChildren: './pages/setup-kids/setup-kids.module#SetupKidsPageModule', canActivate: [AuthGuard]},
-    {
-        path: 'setup-kid-edit/:id',
-        loadChildren: './pages/setup-kid-edit/setup-kid-edit.module#SetupKidEditPageModule',
-        canActivate: [AuthGuard]
+        path: 'home', loadChildren: './pages/home/home.module#HomePageModule',
+        canActivate: [AuthGuard, SetupGuard]
     },
     {
-        path: 'choose-avatar/:id',
-        loadChildren: './pages/choose-avatar/choose-avatar.module#ChooseAvatarPageModule',
-        canActivate: [AuthGuard]
-    },
-    {
-        path: 'setup-chores',
-        loadChildren: './pages/setup-chores/setup-chores.module#SetupChoresPageModule',
+        path: 'tellmommy',
+        loadChildren: './pages/tabs/tabs.module#TabsModule',
         canActivate: [AuthGuard]
     }
 ];

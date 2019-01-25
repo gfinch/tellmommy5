@@ -5,11 +5,18 @@ import {EventsService, EventTopic} from '../../services/events/events.service';
 import {AlertController, IonItemSliding, NavController, ToastController} from '@ionic/angular';
 import {RewardSystem, RewardSystemService} from '../../services/reward-system/reward-system.service';
 import {Account, AccountService} from '../../services/account/account.service';
+import {Chore, ChoreService, Frequency} from '../../services/chore/chore.service';
 
 export class DisplayableAccount {
     account: Account;
     split: number;
     editing: boolean;
+}
+
+export class DisplayableAssignment {
+    chore: Chore;
+    frequency: Frequency;
+    value: string;
 }
 
 @Component({
@@ -22,7 +29,7 @@ export class SetupKidEditPage implements OnInit {
     undefinedKid = {
         id: '',
         name: '',
-        avatar: '',
+        avatar: '/assets/avatars/girl-25.svg',
         deleted: false,
         lastUpdated: -1
     };
@@ -33,13 +40,15 @@ export class SetupKidEditPage implements OnInit {
     kidToEdit: Kid;
     uneditedName: string;
     uneditedAccountName: string;
-    accounts: DisplayableAccount[];
+    accounts: DisplayableAccount[] = [];
     accountSliderTimer = null;
+    assignments: DisplayableAssignment[] = [];
 
     constructor(private route: ActivatedRoute,
                 private kidService: KidService,
                 private rewardSystemService: RewardSystemService,
                 private accountService: AccountService,
+                private choreService: ChoreService,
                 private eventsService: EventsService,
                 private navController: NavController,
                 private alertController: AlertController,
@@ -49,6 +58,7 @@ export class SetupKidEditPage implements OnInit {
         eventsService.subscribe(EventTopic.RewardSystemChanged, () => {
             this.refreshRewardSystem();
             this.refreshAccounts();
+            this.refreshAssignments();
         });
         eventsService.subscribe(EventTopic.KidChanged, (kid: Kid) => {
             if (kid.id == this.kidId && !kid.deleted) {
@@ -61,6 +71,9 @@ export class SetupKidEditPage implements OnInit {
         eventsService.subscribe(EventTopic.AccountsChanged, () => {
             this.refreshAccounts();
         });
+        eventsService.subscribe(EventTopic.AssignmentChanged, () => {
+            this.refreshAssignments();
+        });
         eventsService.subscribe(EventTopic.ClearAll, () => {
             this.clearPage();
         });
@@ -71,6 +84,7 @@ export class SetupKidEditPage implements OnInit {
         this.refreshRewardSystem();
         this.refreshKid();
         this.refreshAccounts();
+        this.refreshAssignments();
     }
 
     private clearPage() {
@@ -109,18 +123,28 @@ export class SetupKidEditPage implements OnInit {
     }
 
     private saveButton() {
-        this.navController.navigateBack('/setup-kids');
+        this.navController.navigateBack('/tellmommy/tabs/setup-kids');
     }
 
     private deleteButton() {
         this.showAlert(this.kidToEdit.name, 'accounts, ', () => {
-            this.navController.navigateBack('/setup-kids');
-            this.deleteKid();
+            this.navController.navigateBack('/tellmommy/tabs/setup-kids').then(() => {
+                this.deleteKid();
+            });
         });
     }
 
+    private unassignButton(assignment: DisplayableAssignment) {
+        const item = <IonItemSliding><any>document.getElementById(assignment.chore.id);
+        if (item) {
+            item.close();
+        }
+
+        this.choreService.unassignChore(assignment.chore.id, this.kidId);
+    }
+
     private chooseNewAvatar() {
-        this.navController.navigateForward('/choose-avatar/' + this.kidId);
+        this.navController.navigateForward('/tellmommy/tabs/setup-kids/kids/' + this.kidId + '/avatar');
     }
 
     private startEditingAccount(account: DisplayableAccount) {
@@ -233,6 +257,24 @@ export class SetupKidEditPage implements OnInit {
                     };
                 }));
             }
+        });
+    }
+
+    private refreshAssignments() {
+        this.zone.run(() => {
+            console.log('Refreshing assignments');
+            const assignments = this.choreService.listAssignmentsForKid(this.kidId);
+            console.log('Found ' + assignments.length + ' assignments.');
+            this.assignments = assignments.map(assignment => {
+                const chore = this.choreService.getChore(assignment.choreId);
+                const frequency = assignment.frequency;
+                const value = assignment.value.toString();
+                return {
+                    chore: chore,
+                    frequency: frequency,
+                    value: value
+                };
+            });
         });
     }
 

@@ -72,73 +72,25 @@
             </ion-item-options>
         </ion-item-sliding>
     </ion-list>
+    <ion-list>
+        <ion-item-divider *ngIf="assignments.length > 0">
+            <ion-label>
+                Assigned Chores
+            </ion-label>
+        </ion-item-divider>
+        <ion-item-sliding *ngFor="let assignment of assignments" [id]="assignment.chore.id">
+            <ion-item>
+                <ion-thumbnail slot="start">
+                    <ion-img [src]="assignment.chore.icon"></ion-img>
+                </ion-thumbnail>
+                <ion-label>
+                    {{assignment.chore.name}}
+                </ion-label>
+            </ion-item>
+            <ion-item-options class="sliding-enabled">
+                <ion-item-option color="danger" (click)="unassignButton(assignment)">Unassign</ion-item-option>
+            </ion-item-options>
+        </ion-item-sliding>
+    </ion-list>
 </ion-content>
 
-
-<!--
-<ion-header>
-  <ion-navbar>
-    <ion-title>Edit {{kidToEdit.name ? kidToEdit.name : uneditedKid.name}}</ion-title>
-    <button ion-button icon-only menuToggle right>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-  </ion-navbar>
-</ion-header>
-
-<ion-content padding>
-  <ion-list>
-    ...
-    <ion-list-header text-wrap *ngIf="rewardSystem !== rewardSystemType.None">
-      Reward Accounts
-      <button ion-fab mini item-right color="secondary" (click)="doShowAccountHelp()" color="royal">
-        <ion-icon name="help"></ion-icon>
-      </button>
-      <button ion-fab mini item-end color="secondary" (click)="doAddAccount()">
-        <ion-icon name="add"></ion-icon>
-      </button>
-    </ion-list-header>
-    <ion-item-sliding *ngFor="let account of accounts" #slidingAccount>
-      <ion-item *ngIf="account.editing" no-lines>
-        <ion-input type="text" [(ngModel)]="account.name" (ionBlur)="doUpdateAccount(account)"
-                   (keypress)="keypressAccount(account, $event.keyCode)" placeholder="Account Name"
-                   col-10></ion-input>
-        <ion-badge item-end col-2>{{account.split}}%</ion-badge>
-      </ion-item>
-      <ion-item *ngIf="account.editing">
-        <ion-range [(ngModel)]="account.split" min="0" max="100" pin="true" (ionChange)="levelSplits(account)"
-                   (ionBlur)="doUpdateAccount(account)">
-          <ion-label range-left>0%</ion-label>
-          <ion-label range-right>100%</ion-label>
-        </ion-range>
-      </ion-item>
-      <ion-item *ngIf="!account.editing" (click)="doEdit(account)">
-        {{account.name}}
-        <ion-badge item-end>{{account.split}}%</ion-badge>
-      </ion-item>
-      <ion-item-options *ngIf="!account.editing" side="right">
-        <button ion-button (click)="doDelete(account, slidingAccount)" color="danger"
-                [disabled]="accounts.length == 1">&nbsp;Delete&nbsp;
-        </button>
-      </ion-item-options>
-    </ion-item-sliding>
-    <ion-list-header text-wrap *ngIf="kidsChores.length > 0">
-      Assigned Chores
-    </ion-list-header>
-    <ion-item-sliding *ngFor="let choreAssignedToKid of kidsChores" #slidingChore>
-      <ion-item (click)="editChore(choreAssignedToKid)">
-        <ion-thumbnail item-start>
-          <img [src]="choreAssignedToKid.chore.icon">
-        </ion-thumbnail>
-        <ion-label>
-          {{choreAssignedToKid.chore.name}}
-          <p>{{choreAssignedToKid.displayText()}}</p>
-        </ion-label>
-      </ion-item>
-      <ion-item-options side="right">
-        <button ion-button (click)="unassign(choreAssignedToKid, slidingChore)">Unassign</button>
-      </ion-item-options>
-    </ion-item-sliding>
-  </ion-list>
-</ion-content>
-
--->

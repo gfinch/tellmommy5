@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 import {Kid, KidService} from '../../services/kid/kid.service';
-import {Chore, ChoreService} from '../../services/chore/chore.service';
+import {Chore, ChoreService, Frequency} from '../../services/chore/chore.service';
 import {EventsService, EventTopic} from '../../services/events/events.service';
+import {IonItemSliding, NavController} from '@ionic/angular';
 
 export class ChoreGroup {
     groupName: string;
@@ -15,6 +16,13 @@ export class ChoreGroup {
     }
 }
 
+export class ChoreAssignedToKids {
+    chore: Chore;
+    kids: Kid[];
+    kidsNames: string;
+    frequency: Frequency;
+}
+
 @Component({
     selector: 'app-setup-chores',
     templateUrl: './setup-chores.page.html',
@@ -22,20 +30,24 @@ export class ChoreGroup {
 })
 export class SetupChoresPage {
 
-    kids: Map<string, Kid> = new Map();
     chores: Chore[];
+    choresAssignedToKids: ChoreAssignedToKids[];
     choreGroups: ChoreGroup[] = [];
 
     constructor(private kidService: KidService,
                 private choreService: ChoreService,
-                private eventsService: EventsService) {
-        eventsService.subscribe(EventTopic.ChoreListChanged, (choreList: Chore[]) => {
-            this.updateChores(choreList);
+                private eventsService: EventsService,
+                private navController: NavController) {
+        eventsService.subscribe(EventTopic.ChoreListChanged, () => {
+            this.refresh();
+        });
+        eventsService.subscribe(EventTopic.AssignmentChanged, () => {
+            this.refresh();
         });
         eventsService.subscribe(EventTopic.KidChanged, (kid: Kid) => {
-            this.kids.set(kid.id, kid);
+            this.refresh();
         });
-        this.initialize();
+        this.refresh();
     }
 
     doToggleSection(group: ChoreGroup) {
@@ -43,15 +55,58 @@ export class SetupChoresPage {
     }
 
     chooseChore(chore: Chore) {
-        console.log('Chore chosen: ' + chore.name);
+        this.navController.navigateForward('/tellmommy/tabs/setup-chores/chores/' + chore.id);
     }
 
-    private initialize() {
-        this.kidService.listKids().forEach(kid => {
-            this.kids.set(kid.id, kid);
+    unassign(assignment: ChoreAssignedToKids) {
+        const item = <IonItemSliding><any>document.getElementById(assignment.chore.id);
+        if (item) {
+            item.close();
+        }
+
+        assignment.kids.forEach(kid => {
+            this.choreService.unassignChore(assignment.chore.id, kid.id);
         });
+    }
+
+    private refresh() {
         this.choreService.listChores().then(choreList => {
             this.updateChores(choreList);
+        });
+        this.updateAssignments();
+        if (this.kidService.listKids().length <= 0) {
+            this.navigateToKids();
+        }
+    }
+
+    private navigateToKids() {
+        this.navController.navigateBack('/tellmommy/tabs/setup-kids');
+    }
+
+    private updateAssignments() {
+        this.choresAssignedToKids = [];
+        this.choreService.assignments.forEach((assignmentMap, choreId) => {
+            const chore = this.choreService.getChore(choreId);
+            let frequency = Frequency.Daily;
+            const kids: Kid[] = [];
+            let kidsNames = '';
+            let delimiter = '';
+            assignmentMap.forEach((choreAssignment, kidId) => {
+                frequency = choreAssignment.frequency;
+                const kid = this.kidService.getKid(kidId);
+                if (kid) {
+                    kidsNames = kidsNames + delimiter + kid.name;
+                    delimiter = ', ';
+                    kids.push(kid);
+                }
+            });
+            const choreAssignedToKids: ChoreAssignedToKids = {
+                chore: chore,
+                kids: kids,
+                kidsNames: kidsNames,
+                frequency: frequency
+            };
+            this.choresAssignedToKids.push(choreAssignedToKids);
         });
     }
 
@@ -77,12 +132,10 @@ export class SetupChoresPage {
             new ChoreGroup('Talents and Interests', talentChores, false),
             new ChoreGroup('Miscellaneous', miscChores, false)
         ];
-
-
     }
 
     private hasAssignments(chore: Chore): boolean {
-        return false;
+        return this.choreService.listAssignmentsForChore(chore.id).length > 0;
     }
 
     private fitsCategory(choreArray: Chore[], categoryName: string) {
