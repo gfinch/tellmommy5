@@ -99,7 +99,7 @@ export class KidService {
         this.transactionService
             .replayTransactionsSince(TransactionType.Kid, this.lastUpdated)
             .catch(err => {
-                console.log('Failed to replay transactions because ' + err);
+                console.log('Failed to replay transactionMap because ' + err);
             });
     }
 

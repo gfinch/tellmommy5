@@ -120,7 +120,7 @@ export class SetupChoreEditPage implements OnInit {
 
     private doneWithPage() {
         this.save();
-        this.navController.navigateBack('/tellmommy/tabs/setup-chores');
+        this.navController.navigateBack('/setup/tab/setup-chores');
     }
 
     private save() {

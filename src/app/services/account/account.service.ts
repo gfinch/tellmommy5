@@ -119,6 +119,10 @@ export class AccountService {
         return accounts;
     }
 
+    getAccountById(accountId: string): Account {
+        return this.accounts.get(accountId);
+    }
+
     private buildAccountForKid(rewardSystem: RewardSystem, kidId: string, name: string, split?: number): Account {
         const accountId = UUID.random();
         return {
@@ -144,7 +148,7 @@ export class AccountService {
         this.transactionService
             .replayTransactionsSince(TransactionType.Account, this.lastUpdated)
             .catch(err => {
-                console.log('Failed to replay transactions because ' + err);
+                console.log('Failed to replay transactionMap because ' + err);
             });
     }
 

@@ -14,7 +14,7 @@ export class KidsExistGuard implements CanActivate {
 
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         if (this.kidService.listKids().length <= 0) {
-            return this.navController.navigateRoot('/tellmommy/tabs/setup-kids').then(() => {
+            return this.navController.navigateRoot('/setup/tab/setup-kids').then(() => {
                 return false;
             });
         } else {

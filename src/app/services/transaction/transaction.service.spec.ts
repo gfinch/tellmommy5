@@ -14,9 +14,9 @@ describe('TransactionService', () => {
         expect(service).toBeTruthy();
     });
 
-    describe('retrieve transactions', () => {
+    describe('retrieve transactionMap', () => {
         it('should get a value from a mutable entity map.', () => {
-            const expected = new Transaction(TransactionType.RewardSystem, TransactionAction.Create, 10, '123', {'hello': 'world'});
+            const expected = new Transaction(TransactionType.RewardSystem, TransactionAction.Create, 10, '123', {'hello': 'world'}, '1');
             const map = new Map([['123', expected]]);
             const storageService = new StorageServiceMock(new Map([['Transaction_RewardSystem', map]]));
             const transactionService = new TransactionService(

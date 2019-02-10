@@ -4,18 +4,36 @@ import {AuthGuard} from './guards/auth.guard';
 import {SetupGuard} from './guards/setup.guard';
 
 const routes: Routes = [
-    {path: '', redirectTo: 'home', pathMatch: 'full'},
+    {path: '', redirectTo: 'choose-a-kid', pathMatch: 'full'},
     {path: 'register', loadChildren: './pages/register/register.module#RegisterPageModule'},
     {path: 'login', loadChildren: './pages/login/login.module#LoginPageModule'},
     {path: 'forgot-pass', loadChildren: './pages/forgot-pass/forgot-pass.module#ForgotPassPageModule'},
     {
-        path: 'home', loadChildren: './pages/home/home.module#HomePageModule',
+        path: 'home',
+        canActivate: [AuthGuard, SetupGuard],
+        redirectTo: 'choose-a-kid'
+    },
+    {
+        path: 'setup',
+        loadChildren: './pages/tabs/tabs.module#TabsModule',
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'view-edit-kids-chores/:id',
+        loadChildren: './pages/view-edit-kids-chores/view-edit-kids-chores.module#ViewEditKidsChoresPageModule'
+    },
+    {
+        path: 'choose-a-kid',
+        loadChildren: './pages/choose-a-kid/choose-a-kid.module#ChooseAKidPageModule',
         canActivate: [AuthGuard, SetupGuard]
     },
     {
-        path: 'tellmommy',
-        loadChildren: './pages/tabs/tabs.module#TabsModule',
-        canActivate: [AuthGuard]
+        path: 'view-edit-kids-account',
+        loadChildren: './pages/view-edit-kids-chores/view-edit-kids-chores.module#ViewEditKidsChoresPageModule'
+    },
+    {
+        path: 'view-edit-kids-account/:kidId/:accountId',
+        loadChildren: './pages/view-edit-kids-account/view-edit-kids-account.module#ViewEditKidsAccountPageModule'
     }
 ];
 

@@ -5,6 +5,7 @@ import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {AuthService} from './services/auth/auth.service';
 import {StorageService} from './services/storage/storage.service';
 import {EventsService, EventTopic} from './services/events/events.service';
+import {TestDataService} from './services/test-data/test-data.service';
 
 @Component({
     selector: 'app-root',
@@ -17,7 +18,8 @@ export class AppComponent {
         private authService: AuthService,
         private storageService: StorageService,
         private navController: NavController,
-        private eventsService: EventsService
+        private eventsService: EventsService,
+        private testDataService: TestDataService
     ) {
         this.initializeApp();
     }
@@ -43,14 +45,22 @@ export class AppComponent {
     }
 
     doRewardSystem() {
-        this.navController.navigateRoot('/tellmommy/tabs/choose-reward-system');
+        this.navController.navigateRoot('/setup/tab/choose-reward-system');
     }
 
     doSetupKids() {
-        this.navController.navigateRoot('/tellmommy/tabs/setup-kids');
+        this.navController.navigateRoot('/setup/tab/setup-kids');
     }
 
     doSetupChores() {
-        this.navController.navigateRoot('/tellmommy/tabs/setup-chores');
+        this.navController.navigateRoot('/setup/tab/setup-chores');
+    }
+
+    doChooseAKid() {
+        this.navController.navigateRoot('/choose-a-kid');
+    }
+
+    doGenerateRandom() {
+        this.testDataService.generate();
     }
 }

@@ -37,7 +37,7 @@ export class RewardSystemService {
         this.transactionService
             .replayTransactionsSince(TransactionType.RewardSystem, this.lastUpdated)
             .catch(err => {
-                console.log('Failed to replay transactions because ' + err);
+                console.log('Failed to replay transactionMap because ' + err);
             });
     }
 

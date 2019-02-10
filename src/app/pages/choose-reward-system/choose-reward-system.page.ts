@@ -48,7 +48,7 @@ export class ChooseRewardSystemPage implements OnInit {
     }
 
     doneWithPage() {
-        this.navController.navigateForward('/tellmommy/tabs/setup-kids');
+        this.navController.navigateForward('/setup/tab/setup-kids');
     }
 
     private initializeRewardSystems() {

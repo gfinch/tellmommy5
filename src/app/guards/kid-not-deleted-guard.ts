@@ -17,7 +17,7 @@ export class KidNotDeletedGuard implements CanActivate {
         if (this.kidService.getKid(kidId) && !this.kidService.getKid(kidId).deleted) {
             return true;
         } else {
-            return this.navController.navigateRoot('/tellmommy/tabs/setup-kids').then(() => {
+            return this.navController.navigateRoot('/setup/tab/setup-kids').then(() => {
                 return false;
             });
         }

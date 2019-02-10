@@ -55,7 +55,7 @@ export class SetupChoresPage {
     }
 
     chooseChore(chore: Chore) {
-        this.navController.navigateForward('/tellmommy/tabs/setup-chores/chores/' + chore.id);
+        this.navController.navigateForward('/setup/tab/setup-chores/chores/' + chore.id);
     }
 
     unassign(assignment: ChoreAssignedToKids) {
@@ -80,7 +80,7 @@ export class SetupChoresPage {
     }
 
     private navigateToKids() {
-        this.navController.navigateBack('/tellmommy/tabs/setup-kids');
+        this.navController.navigateBack('/setup/tab/setup-kids');
     }
 
     private updateAssignments() {

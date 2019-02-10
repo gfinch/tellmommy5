@@ -12,7 +12,11 @@ export enum EventTopic {
     AccountsChanged = 'AccountsChanged',
     ChoreListChanged = 'ChoreListChanged',
     AssignmentTransaction = 'AssignmentTransaction',
-    AssignmentChanged = 'AssignmentChanged'
+    AssignmentChanged = 'AssignmentChanged',
+    DoAssignmentTransaction = 'DoAssignmentTransaction',
+    DoAssignment = 'DoAssignment',
+    DepositTransaction = 'DepositTransaction',
+    Deposit = 'Deposit'
 }
 
 export abstract class EventsService {

@@ -29,6 +29,8 @@ export class ChoreAssignment {
     kidId: string;
     frequency: Frequency;
     value: number;
+    startTime: number;
+    endTime: number;
     deleted: boolean;
 }
 
@@ -82,7 +84,7 @@ export class ChoreService {
         });
     }
 
-    assignChore(choreId: string, kidId: string, value: number, frequency: Frequency) {
+    assignChore(choreId: string, kidId: string, value: number, frequency: Frequency, startTime: number = new Date().getTime()) {
         const entityId = choreId + '_' + kidId;
         const assignment = {
             id: entityId,
@@ -90,6 +92,8 @@ export class ChoreService {
             kidId: kidId,
             frequency: frequency,
             value: value,
+            startTime: startTime,
+            endTime: null,
             deleted: false
         };
         this.logTransaction(assignment);
@@ -99,6 +103,7 @@ export class ChoreService {
         const assignment = this.getAssignmentForKid(kidId, choreId);
         if (assignment) {
             assignment.deleted = true;
+            assignment.endTime = new Date().getTime();
             this.logTransaction(assignment);
         }
     }
@@ -114,7 +119,7 @@ export class ChoreService {
 
     listAssignmentsForKid(kidId: string): ChoreAssignment[] {
         const assignmentsForKid: ChoreAssignment[] = [];
-        this.assignments.forEach((kidMap: Map<string, ChoreAssignment>, choreId) => {
+        this.assignments.forEach((kidMap: Map<string, ChoreAssignment>) => {
             if (kidMap.get(kidId)) {
                 assignmentsForKid.push(kidMap.get(kidId));
             }
@@ -126,11 +131,23 @@ export class ChoreService {
         return this.getAssignmentForKid(kidId, choreId) != null;
     }
 
+    getAssignmentById(assignmentId: string): ChoreAssignment {
+        let result: ChoreAssignment = null;
+        this.assignments.forEach((kidMap: Map<string, ChoreAssignment>) => {
+            kidMap.forEach(choreAssignment => {
+                if (choreAssignment.id === assignmentId) {
+                    result = choreAssignment;
+                }
+            });
+        });
+        return result;
+    }
+
     private replayTransactions() {
         this.transactionService
             .replayTransactionsSince(TransactionType.Assignment, this.lastUpdated)
             .catch(err => {
-                console.log('Failed to replay transactions because ' + err);
+                console.log('Failed to replay transactionMap because ' + err);
             });
     }
 
@@ -152,7 +169,6 @@ export class ChoreService {
     }
 
     private addAssignmentsFromTransaction(transactions: Transaction[]) {
-        console.log('Got some assignment transactions!');
         transactions.forEach(transaction => {
             const assignment = transaction.entity as ChoreAssignment;
             if (!assignment.deleted) {

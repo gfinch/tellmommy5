@@ -123,12 +123,12 @@ export class SetupKidEditPage implements OnInit {
     }
 
     private saveButton() {
-        this.navController.navigateBack('/tellmommy/tabs/setup-kids');
+        this.navController.navigateBack('/setup/tab/setup-kids');
     }
 
     private deleteButton() {
         this.showAlert(this.kidToEdit.name, 'accounts, ', () => {
-            this.navController.navigateBack('/tellmommy/tabs/setup-kids').then(() => {
+            this.navController.navigateBack('/setup/tab/setup-kids').then(() => {
                 this.deleteKid();
             });
         });
@@ -144,7 +144,7 @@ export class SetupKidEditPage implements OnInit {
     }
 
     private chooseNewAvatar() {
-        this.navController.navigateForward('/tellmommy/tabs/setup-kids/kids/' + this.kidId + '/avatar');
+        this.navController.navigateForward('/setup/tab/setup-kids/kids/' + this.kidId + '/avatar');
     }
 
     private startEditingAccount(account: DisplayableAccount) {
@@ -248,7 +248,7 @@ export class SetupKidEditPage implements OnInit {
             console.log('Refreshing accounts');
             if (this.rewardSystem !== RewardSystem.None) {
                 const kidsAccounts = this.accountService.listAccountsForKid(this.rewardSystem, this.kidId);
-                console.log('Found ' + kidsAccounts.length + ' accounts.');
+                console.log('Found ' + kidsAccounts.length + ' accounts for ' + this.kidId + ' - ' + this.rewardSystem + '.');
                 this.accounts = kidsAccounts.map((acct => {
                     return {
                         account: acct,

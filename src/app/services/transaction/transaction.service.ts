@@ -8,7 +8,9 @@ export enum TransactionType {
     RewardSystem = 'RewardSystem',
     Kid = 'Kid',
     Account = 'Account',
-    Assignment = 'Assignment'
+    Assignment = 'Assignment',
+    DoAssignment = 'DoAssignment',
+    Deposit = 'Deposit'
 }
 
 export enum TransactionAction {
@@ -16,11 +18,6 @@ export enum TransactionAction {
     Update = 'Update',
     Delete = 'Delete',
     Upsert = 'Upsert'
-}
-
-export enum TransactionStructure {
-    Immutable = 0,
-    Mutable = 1
 }
 
 export class Transaction {
@@ -48,26 +45,22 @@ export class Transaction {
 export class TransactionService {
 
     pendingTransactions: Map<string, Transaction[]> = new Map<string, Transaction[]>();
-    transactionMap: Map<TransactionType, Map<string, Transaction> | Transaction[]> = null;
+    transactionMap: Map<TransactionType, Map<string, Transaction>> = null;
     transactionsAreInitialized = false;
-    transactionStructureMap: Map<TransactionType, TransactionStructure> = new Map([
-        [TransactionType.RewardSystem, TransactionStructure.Mutable],
-        [TransactionType.Kid, TransactionStructure.Mutable],
-        [TransactionType.Account, TransactionStructure.Mutable],
-        [TransactionType.Assignment, TransactionStructure.Mutable]
-    ]);
     transactionTopicMap: Map<TransactionType, EventTopic> = new Map([
         [TransactionType.RewardSystem, EventTopic.RewardSystemTransaction],
         [TransactionType.Kid, EventTopic.KidTransaction],
         [TransactionType.Account, EventTopic.AccountTransaction],
-        [TransactionType.Assignment, EventTopic.AssignmentTransaction]
+        [TransactionType.Assignment, EventTopic.AssignmentTransaction],
+        [TransactionType.DoAssignment, EventTopic.DoAssignmentTransaction],
+        [TransactionType.Deposit, EventTopic.DepositTransaction]
     ]);
 
     constructor(private amplifyService: AmplifyService,
                 private storageService: StorageService,
                 private eventsService: EventsService) {
         console.log('Instantiating TransactionService');
-        this.transactionMap = new Map<TransactionType, Map<string, Transaction> | Transaction[]>();
+        this.transactionMap = new Map<TransactionType, Map<string, Transaction>>();
         eventsService.subscribe(EventTopic.ClearAll, (transaction: Transaction) => {
             this.transactionMap.clear();
         });
@@ -99,24 +92,24 @@ export class TransactionService {
         const transactions = this.pendingTransactions.get(group);
         if (transactions) {
             console.log('Committing ' + transactions.length + ' from group ' + group);
+            const promises = transactions.map(transaction => {
+                return this.appendTransaction(transaction.transactionType, transaction);
+            });
+            return Promise.all(promises).then(() => {
+                this.publishTransactionEvent(transactionType, transactions);
+                return transactions;
+            });
         } else {
             console.log('Committing 0 from group ' + group);
+            return Promise.resolve([]);
         }
-
-        const promises = transactions.map(transaction => {
-            this.appendTransaction(transaction.transactionType, transaction);
-        });
-        return Promise.all(promises).then(() => {
-            this.publishTransactionEvent(transactionType, transactions);
-            return transactions;
-        });
     }
 
     replayTransactionsSince(transactionType: TransactionType, lastTransactionTimestamp: number): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            console.log('Attempting to replay transactions: ' + transactionType + ' since ' + lastTransactionTimestamp);
+            console.log('Attempting to replay transactionMap: ' + transactionType + ' since ' + lastTransactionTimestamp);
             this.retrieveTransactionsSince(transactionType, lastTransactionTimestamp).then(transactions => {
-                console.log('Found ' + transactions.length + ' transactions for ' + transactionType);
+                console.log('Found ' + transactions.length + ' transactionMap for ' + transactionType);
                 this.publishTransactionEvent(transactionType, transactions);
             });
         });
@@ -144,13 +137,7 @@ export class TransactionService {
         return new Promise<Transaction[]>((resolve, reject) => {
             this.initializeTransactions().then(() => {
                 this.retrieveAllTransactions(transactionType).then(transactions => {
-                    let transactionArray: Transaction[] = null;
-                    if (this.transactionStructureMap.get(transactionType) == TransactionStructure.Mutable) {
-                        transactionArray = Array.from((transactions as Map<string, Transaction>).values());
-                    } else {
-                        transactionArray = (transactions as Transaction[]);
-                    }
-
+                    const transactionArray = Array.from((transactions as Map<string, Transaction>).values());
                     const filtered = transactionArray.filter(transaction => {
                         return transaction.transactionTimestamp > lastTransactionTimestamp;
                     });
@@ -179,8 +166,8 @@ export class TransactionService {
         });
     }
 
-    private retrieveAllTransactions(transactionType: TransactionType): Promise<Map<string, Transaction> | Transaction[]> {
-        return new Promise<Map<string, Transaction> | Transaction[]>((resolve, reject) => {
+    private retrieveAllTransactions(transactionType: TransactionType): Promise<Map<string, Transaction>> {
+        return new Promise<Map<string, Transaction>>((resolve, reject) => {
             if (this.transactionMap.get(transactionType)) {
                 resolve(this.transactionMap.get(transactionType));
             } else {
@@ -189,18 +176,13 @@ export class TransactionService {
                 this.storageService.get(storageKey)
                     .then(transactions => {
                         if (transactions) {
-                            console.log('Found existing transactions for ' + storageKey);
+                            console.log('Found existing transactionMap for ' + storageKey);
                             this.transactionMap.set(transactionType, transactions);
                             resolve(transactions);
                         } else {
-                            let emptyTransactions: Map<string, Transaction> | Transaction[];
-                            if (this.transactionStructureMap.get(transactionType) === TransactionStructure.Mutable) {
-                                console.log('Creating a new map for ' + storageKey);
-                                emptyTransactions = new Map<string, Transaction>();
-                            } else {
-                                console.log('Creating a new array for ' + storageKey);
-                                emptyTransactions = [];
-                            }
+                            console.log('Creating a new map for ' + storageKey);
+                            const emptyTransactions = new Map<string, Transaction>();
+
                             this.storageService.set(storageKey, emptyTransactions).then(() => {
                                 this.transactionMap.set(transactionType, emptyTransactions);
                                 resolve(emptyTransactions);
@@ -217,17 +199,13 @@ export class TransactionService {
         console.log('Appending transaction: ' + JSON.stringify(transaction));
         return new Promise<Map<string, Transaction> | Transaction[]>((resolve, reject) => {
             this.retrieveAllTransactions(transactionType).then(transactions => {
-                if (this.transactionStructureMap.get(transactionType) === TransactionStructure.Mutable) {
-                    const mutableEntityMap = transactions as Map<string, Transaction>;
-                    console.log('Trying to get transaction for ' + transaction.entityId);
-                    const currentTransaction = mutableEntityMap.get(transaction.entityId);
-                    if (!currentTransaction || currentTransaction.transactionTimestamp <= transaction.transactionTimestamp) {
-                        mutableEntityMap.set(transaction.entityId, transaction);
-                    } else {
-                        console.log('Failed to update ' + transaction.entityId + ' with a timestamp earlier than stored entity.');
-                    }
+                const mutableEntityMap = transactions as Map<string, Transaction>;
+                console.log('Trying to get transaction for ' + transaction.entityId);
+                const currentTransaction = mutableEntityMap.get(transaction.entityId);
+                if (!currentTransaction || currentTransaction.transactionTimestamp <= transaction.transactionTimestamp) {
+                    mutableEntityMap.set(transaction.entityId, transaction);
                 } else {
-                    (transactions as Transaction[]).push(transaction);
+                    console.log('Failed to update ' + transaction.entityId + ' with a timestamp earlier than stored entity.');
                 }
                 this.transactionMap.set(transactionType, transactions);
                 const storageKey = this.buildStorageKey(transactionType);

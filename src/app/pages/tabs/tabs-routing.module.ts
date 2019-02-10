@@ -14,7 +14,7 @@ import {SetupChoreEditPage} from '../setup-chore-edit/setup-chore-edit.page';
 
 const routes: Routes = [
     {
-        path: 'tabs',
+        path: 'tab',
         component: TabsPage,
         children: [
             {
@@ -63,7 +63,7 @@ const routes: Routes = [
             },
             {
                 path: '',
-                redirectTo: '/tellmommy/tabs/choose-reward-system',
+                redirectTo: '/setup/tabs/choose-reward-system',
                 pathMatch: 'full'
             }
         ]

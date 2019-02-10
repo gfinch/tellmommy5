@@ -15,14 +15,18 @@ export class SetupGuard implements CanActivate {
     }
 
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+        console.log('Checking the setup guard!!!!');
         if (this.kidService.listKids().length > 0 && this.choreService.assignments.size > 0) {
+            console.log('Allowing to pass setup!');
             return true;
         } else if (this.kidService.listKids().length > 0) {
-            return this.navController.navigateRoot('/tellmommy/tabs/setup-chores').then(() => {
+            return this.navController.navigateRoot('/setup/tab/setup-chores').then(() => {
+                console.log('Not enough kids!');
                 return false;
             });
         } else {
-            return this.navController.navigateRoot('/tellmommy/tabs/choose-reward-system').then(() => {
+            return this.navController.navigateRoot('/setup/tab/choose-reward-system').then(() => {
+                console.log('Not enough assignments!');
                 return false;
             });
         }

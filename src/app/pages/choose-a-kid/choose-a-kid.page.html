@@ -1,0 +1,19 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Choose a Kid</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-card *ngFor="let kid of kids" (click)="goToKidPage(kid)">
+        <ion-avatar slot="start">
+            <img [src]="kid.avatar">
+        </ion-avatar>
+        <h2>{{kid.name}}</h2>
+        <ion-badge slot="end" color="royal"
+                   *ngIf="getRemainingChoreCount(kid) > 0">{{getRemainingChoreCount(kid)}}
+        </ion-badge>
+        <ion-icon slot="end" color="secondary" *ngIf="getRemainingChoreCount(kid) <= 0"
+                  name="md-checkmark-circle"></ion-icon>
+    </ion-card>
+</ion-content>
