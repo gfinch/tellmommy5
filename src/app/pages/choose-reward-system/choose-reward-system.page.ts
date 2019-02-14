@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {RewardSystem, RewardSystemService} from '../../services/reward-system/reward-system.service';
 import {EventsService, EventTopic} from '../../services/events/events.service';
-import {NavController} from '@ionic/angular';
+import {NavigationService, Page} from '../../services/navigation/navigation.service';
 
 export class DisplayableRewardSystem {
     id: RewardSystem;
@@ -23,7 +23,7 @@ export class ChooseRewardSystemPage implements OnInit {
 
     constructor(private rewardSystemService: RewardSystemService,
                 private eventService: EventsService,
-                private navController: NavController) {
+                private navigationService: NavigationService) {
         this.initializeRewardSystems();
         this.resetPage();
         this.eventService.subscribe(EventTopic.RewardSystemChanged, rewardSystem => {
@@ -48,7 +48,7 @@ export class ChooseRewardSystemPage implements OnInit {
     }
 
     doneWithPage() {
-        this.navController.navigateForward('/setup/tab/setup-kids');
+        this.navigationService.navigateForward(Page.SetupKids);
     }
 
     private initializeRewardSystems() {

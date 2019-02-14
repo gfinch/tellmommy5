@@ -3,8 +3,9 @@ import {ActivatedRoute} from '@angular/router';
 import {Chore, ChoreService, Frequency} from '../../services/chore/chore.service';
 import {RewardSystem, RewardSystemService} from '../../services/reward-system/reward-system.service';
 import {EventsService, EventTopic} from '../../services/events/events.service';
-import {NavController, ToastController} from '@ionic/angular';
+import {ToastController} from '@ionic/angular';
 import {KidService} from '../../services/kid/kid.service';
+import {NavigationService, Page} from '../../services/navigation/navigation.service';
 
 export class KidCheck {
     id: string;
@@ -50,7 +51,7 @@ export class SetupChoreEditPage implements OnInit {
     constructor(private route: ActivatedRoute,
                 private eventsService: EventsService,
                 private toastController: ToastController,
-                private navController: NavController,
+                private navigationService: NavigationService,
                 private choreService: ChoreService,
                 private rewardSystemService: RewardSystemService,
                 private kidService: KidService) {
@@ -120,7 +121,7 @@ export class SetupChoreEditPage implements OnInit {
 
     private doneWithPage() {
         this.save();
-        this.navController.navigateBack('/setup/tab/setup-chores');
+        this.navigationService.navigateBack(Page.SetupChores);
     }
 
     private save() {
@@ -128,10 +129,8 @@ export class SetupChoreEditPage implements OnInit {
         const frequency = this.choreFrequency;
         this.kidChecks.forEach(kidCheck => {
             if (kidCheck.checked) {
-                console.log('Assigning chores!');
                 this.choreService.assignChore(this.choreId, kidCheck.id, value, frequency);
             } else {
-                console.log('Unassigning chore!');
                 this.choreService.unassignChore(this.choreId, kidCheck.id);
             }
         });

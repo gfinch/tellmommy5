@@ -6,7 +6,7 @@ import {EventsService, EventTopic} from '../../services/events/events.service';
 import {BankService, DisplayableAccount} from '../../services/bank/bank.service';
 import {Account} from '../../services/account/account.service';
 import {RewardSystem, RewardSystemService} from '../../services/reward-system/reward-system.service';
-import {NavController} from '@ionic/angular';
+import {NavigationService, Page} from '../../services/navigation/navigation.service';
 
 export class FinishedGroup {
     reportingGroup: ReportingGroup;
@@ -54,7 +54,7 @@ export class ViewEditKidsChoresPage implements OnInit {
                 private rewardSystemService: RewardSystemService,
                 private bankService: BankService,
                 private eventService: EventsService,
-                private navController: NavController) {
+                private navigationService: NavigationService) {
         eventService.subscribe(EventTopic.AssignmentChanged, () => {
             this.refresh();
         });
@@ -111,7 +111,7 @@ export class ViewEditKidsChoresPage implements OnInit {
     }
 
     goToAccountPage(account: Account) {
-        this.navController.navigateForward('/view-edit-kids-account/' + account.kidId + '/' + account.accountId);
+        this.navigationService.navigateForward(Page.ViewEditKidsAccount, [account.kidId, account.accountId]);
     }
 
 }

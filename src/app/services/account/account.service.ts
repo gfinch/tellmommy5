@@ -24,6 +24,7 @@ export class AccountService {
     kidAccountMap: Map<string, Map<string, Map<string, Account>>>;
     accounts: Map<string, Account>;
     lastUpdated = -1;
+    initialized = false;
 
     private defaultAccounts: Map<string, Map<string, number>> = new Map([
         [RewardSystem.Money, new Map([['Savings', 50], ['Fun Money', 40], ['Charity', 10]])],
@@ -40,6 +41,7 @@ export class AccountService {
         this.accounts = new Map();
         this.eventsService.subscribe(EventTopic.AccountTransaction, (transactions: Transaction[]) => {
             this.handleAccountTransactionEvent(transactions);
+            this.initialized = true;
         });
         this.eventsService.subscribe(EventTopic.KidChanged, (kid: Kid) => {
             if (kid.deleted) {

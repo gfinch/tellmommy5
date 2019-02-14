@@ -28,7 +28,7 @@ const routes: Routes = [
         canActivate: [AuthGuard, SetupGuard]
     },
     {
-        path: 'view-edit-kids-account',
+        path: 'view-edit-kids-chores',
         loadChildren: './pages/view-edit-kids-chores/view-edit-kids-chores.module#ViewEditKidsChoresPageModule'
     },
     {

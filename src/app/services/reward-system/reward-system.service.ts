@@ -16,8 +16,8 @@ export class RewardSystemService {
 
     rewardSystem: RewardSystem = RewardSystem.Money;
     lastUpdated = -1;
-
     entityId = 'RewardSystemEntityId';
+    initialized = false;
 
     constructor(private transactionService: TransactionService,
                 private eventsService: EventsService) {
@@ -26,6 +26,7 @@ export class RewardSystemService {
             transactions.forEach(transaction => {
                 this.handleRewardSystemTransactionEvent(transaction);
             });
+            this.initialized = true;
         });
         eventsService.subscribe(EventTopic.ClearAll, () => {
             this.rewardSystem = RewardSystem.Money;

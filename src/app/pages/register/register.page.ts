@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth/auth.service';
-import {AlertController, LoadingController, NavController} from '@ionic/angular';
+import {AlertController, LoadingController} from '@ionic/angular';
 import {AuthUtilities, RegistrationDetails} from '../../utilities/auth/auth';
+import {NavigationService, Page} from '../../services/navigation/navigation.service';
 
 @Component({
     selector: 'app-register',
@@ -13,7 +14,8 @@ export class RegisterPage implements OnInit {
     public registrationDetails: RegistrationDetails;
     public isButtonDisabled = false;
 
-    constructor(private navController: NavController, private authService: AuthService,
+    constructor(private navigationService: NavigationService,
+                private authService: AuthService,
                 private loadingCtrl: LoadingController,
                 private alertCtrl: AlertController) {
         this.registrationDetails = new RegistrationDetails();
@@ -23,7 +25,7 @@ export class RegisterPage implements OnInit {
     }
 
     goToLoginPage() {
-        this.navController.navigateForward('/login');
+        this.navigationService.navigateForward(Page.Login);
     }
 
     doRegister() {
@@ -42,7 +44,7 @@ export class RegisterPage implements OnInit {
                         console.log(signedInUserName + ' logged in.');
                         loader.dismiss();
                         this.isButtonDisabled = false;
-                        this.navController.navigateForward('/');
+                        this.navigationService.navigateForward(Page.Home);
                     }).catch(err => {
                         loader.dismiss();
                         this.isButtonDisabled = false;

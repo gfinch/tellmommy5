@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs';
-import {NavController} from '@ionic/angular';
 import {KidService} from '../services/kid/kid.service';
+import {NavigationService, Page} from '../services/navigation/navigation.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class KidNotDeletedGuard implements CanActivate {
-    constructor(private navController: NavController,
+    constructor(private navigationService: NavigationService,
                 private kidService: KidService) {
     }
 
@@ -17,7 +17,7 @@ export class KidNotDeletedGuard implements CanActivate {
         if (this.kidService.getKid(kidId) && !this.kidService.getKid(kidId).deleted) {
             return true;
         } else {
-            return this.navController.navigateRoot('/setup/tab/setup-kids').then(() => {
+            return this.navigationService.navigateRoot(Page.SetupKids).then(() => {
                 return false;
             });
         }

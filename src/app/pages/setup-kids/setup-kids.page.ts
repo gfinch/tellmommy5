@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {EventsService, EventTopic} from '../../services/events/events.service';
 import {Kid, KidService} from '../../services/kid/kid.service';
 import {AvatarService} from '../../services/avatar/avatar.service';
-import {NavController} from '@ionic/angular';
 import {ChoreService} from '../../services/chore/chore.service';
+import {NavigationService, Page} from '../../services/navigation/navigation.service';
 
 @Component({
     selector: 'app-setup-kids',
@@ -19,7 +19,7 @@ export class SetupKidsPage implements OnInit {
     constructor(private eventsService: EventsService,
                 private kidService: KidService,
                 private avatarService: AvatarService,
-                private navController: NavController,
+                private navigationService: NavigationService,
                 private choreService: ChoreService) {
         this.kids = kidService.listKids();
         this.listChores();
@@ -66,7 +66,7 @@ export class SetupKidsPage implements OnInit {
         this.hideNewKidEditor();
         if (this.newKid) {
             const avatar = this.avatarService.randomAvatar();
-            const kidId = this.kidService.createKid(this.newKid, avatar);
+            this.kidService.createKid(this.newKid, avatar);
         }
         this.newKid = null;
     }
@@ -78,7 +78,7 @@ export class SetupKidsPage implements OnInit {
 
     openKidEditPage(kidId) {
         this.hideNewKidEditor();
-        this.navController.navigateForward('/setup/tab/setup-kids/kids/' + kidId);
+        this.navigationService.navigateForward(Page.SetupKidEdit, [kidId]);
     }
 
     reorderKids(event) {

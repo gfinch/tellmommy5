@@ -41,6 +41,7 @@ export class ChoreService {
 
     choreList: Chore[] = [];
     lastUpdated = -1;
+    initialized = false;
 
     // ChoreId --> KidId --> Assignment
     assignments: Map<string, Map<string, ChoreAssignment>> = new Map();
@@ -51,6 +52,7 @@ export class ChoreService {
         console.log('Instantiating Chore Service');
         this.eventsService.subscribe(EventTopic.AssignmentTransaction, (transactions: Transaction[]) => {
             this.addAssignmentsFromTransaction(transactions);
+            this.initialized = true;
         });
         this.eventsService.subscribe(EventTopic.ClearAll, () => {
             this.choreList = [];

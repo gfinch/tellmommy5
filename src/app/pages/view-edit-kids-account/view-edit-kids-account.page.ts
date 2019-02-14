@@ -60,15 +60,10 @@ export class ViewEditKidsAccountPage implements OnInit {
     refresh() {
         this.rewardSystem = this.rewardSystemService.rewardSystem;
         this.kidId = this.route.snapshot.paramMap.get('kidId');
-        console.log('Got Kid Id ' + this.kidId);
         this.kid = this.kidService.getKid(this.kidId);
-        console.log('Got Kid ' + this.kid.name);
         this.accountId = this.route.snapshot.paramMap.get('accountId');
-        console.log('Got account Id ' + this.accountId);
         this.account = this.accountService.getAccountById(this.accountId);
-        console.log('Got account ' + this.account.name);
         this.accountTotal = this.bankService.accountTotal(this.rewardSystem, this.kidId, this.accountId);
-        console.log('Got account total ' + this.accountTotal.accountTotal);
         this.transactions = this.buildTransactions();
     }
 

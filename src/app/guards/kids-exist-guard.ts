@@ -1,20 +1,20 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs';
-import {NavController} from '@ionic/angular';
 import {KidService} from '../services/kid/kid.service';
+import {NavigationService, Page} from '../services/navigation/navigation.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class KidsExistGuard implements CanActivate {
-    constructor(private navController: NavController,
+    constructor(private navigationService: NavigationService,
                 private kidService: KidService) {
     }
 
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         if (this.kidService.listKids().length <= 0) {
-            return this.navController.navigateRoot('/setup/tab/setup-kids').then(() => {
+            return this.navigationService.navigateRoot(Page.SetupKids).then(() => {
                 return false;
             });
         } else {

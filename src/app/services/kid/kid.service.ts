@@ -20,6 +20,7 @@ export class KidService {
 
     kids: Map<string, Kid>;
     lastUpdated = -1;
+    initialized = false;
 
     constructor(private transactionService: TransactionService,
                 private eventsService: EventsService,
@@ -31,6 +32,7 @@ export class KidService {
             transactions.forEach(transaction => {
                 this.handleKidTransactionEvent(transaction);
             });
+            this.initialized = true;
         });
 
         this.eventsService.subscribe(EventTopic.RewardSystemChanged, () => {

@@ -29,6 +29,7 @@ export class BankService {
     // RewardSystem --> KidId --> AccountId --> TransactionId --> Transaction
     transactionMap: Map<RewardSystem, Map<string, Map<string, Map<string, AccountTransaction>>>> = new Map();
     pendingTransactions: Map<string, AccountTransaction[]> = new Map();
+    initialized = false;
 
     constructor(private accountService: AccountService,
                 private transactionService: TransactionService,
@@ -36,6 +37,7 @@ export class BankService {
 
         this.eventService.subscribe(EventTopic.DepositTransaction, (transactions: Transaction[]) => {
             this.handleDeposits(transactions);
+            this.initialized = true;
         });
 
         this.eventService.subscribe(EventTopic.AccountsChanged, () => {

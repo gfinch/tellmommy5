@@ -2,10 +2,11 @@ import {Component, NgZone, OnInit} from '@angular/core';
 import {Kid, KidService} from '../../services/kid/kid.service';
 import {ActivatedRoute} from '@angular/router';
 import {EventsService, EventTopic} from '../../services/events/events.service';
-import {AlertController, IonItemSliding, NavController, ToastController} from '@ionic/angular';
+import {AlertController, IonItemSliding, ToastController} from '@ionic/angular';
 import {RewardSystem, RewardSystemService} from '../../services/reward-system/reward-system.service';
 import {Account, AccountService} from '../../services/account/account.service';
 import {Chore, ChoreService, Frequency} from '../../services/chore/chore.service';
+import {NavigationService, Page} from '../../services/navigation/navigation.service';
 
 export class DisplayableAccount {
     account: Account;
@@ -50,7 +51,7 @@ export class SetupKidEditPage implements OnInit {
                 private accountService: AccountService,
                 private choreService: ChoreService,
                 private eventsService: EventsService,
-                private navController: NavController,
+                private navigationService: NavigationService,
                 private alertController: AlertController,
                 private toastController: ToastController,
                 private zone: NgZone) {
@@ -65,7 +66,7 @@ export class SetupKidEditPage implements OnInit {
                 this.refreshKid();
             } else if (kid.id == this.kidId && kid.deleted) {
                 this.clearPage();
-                this.navController.goBack();
+                this.navigationService.goBack();
             }
         });
         eventsService.subscribe(EventTopic.AccountsChanged, () => {
@@ -123,12 +124,12 @@ export class SetupKidEditPage implements OnInit {
     }
 
     private saveButton() {
-        this.navController.navigateBack('/setup/tab/setup-kids');
+        this.navigationService.navigateBack(Page.SetupKids);
     }
 
     private deleteButton() {
         this.showAlert(this.kidToEdit.name, 'accounts, ', () => {
-            this.navController.navigateBack('/setup/tab/setup-kids').then(() => {
+            this.navigationService.navigateBack(Page.SetupKids).then(() => {
                 this.deleteKid();
             });
         });
@@ -144,7 +145,7 @@ export class SetupKidEditPage implements OnInit {
     }
 
     private chooseNewAvatar() {
-        this.navController.navigateForward('/setup/tab/setup-kids/kids/' + this.kidId + '/avatar');
+        this.navigationService.navigateForward(Page.ChooseAvatar, [this.kidId]);
     }
 
     private startEditingAccount(account: DisplayableAccount) {

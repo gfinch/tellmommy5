@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth/auth.service';
-import {AlertController, LoadingController, NavController} from '@ionic/angular';
+import {AlertController, LoadingController} from '@ionic/angular';
 import {AuthUtilities, RegistrationDetails} from '../../utilities/auth/auth';
+import {NavigationService, Page} from '../../services/navigation/navigation.service';
 
 @Component({
     selector: 'app-login',
@@ -13,7 +14,8 @@ export class LoginPage implements OnInit {
     isButtonDisabled = false;
     loginDetails: RegistrationDetails = null;
 
-    constructor(private navController: NavController, private authService: AuthService,
+    constructor(private navigationService: NavigationService,
+                private authService: AuthService,
                 private loadingCtrl: LoadingController,
                 private alertCtrl: AlertController) {
         this.loginDetails = new RegistrationDetails();
@@ -23,11 +25,11 @@ export class LoginPage implements OnInit {
     }
 
     goToRegisterPage() {
-        this.navController.navigateBack('/register');
+        this.navigationService.navigateBack(Page.Register);
     }
 
     goToForgotPassPage() {
-        this.navController.navigateForward('/forgot-pass');
+        this.navigationService.navigateForward(Page.ForgotPass);
     }
 
     doLogin() {
@@ -40,13 +42,11 @@ export class LoginPage implements OnInit {
                 const email = this.loginDetails.email;
                 const password = this.loginDetails.password;
 
-                console.log(email + ' ... ' + password);
-
                 this.authService.signIn(email, password).then(username => {
                     console.log(username + ' logged in.');
                     loader.dismiss();
                     this.isButtonDisabled = false;
-                    this.navController.navigateForward('/');
+                    this.navigationService.navigateRoot(Page.Home);
                 }).catch(err => {
                     console.log(JSON.stringify(err));
                     loader.dismiss();

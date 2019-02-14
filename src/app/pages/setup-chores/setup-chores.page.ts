@@ -2,7 +2,8 @@ import {Component} from '@angular/core';
 import {Kid, KidService} from '../../services/kid/kid.service';
 import {Chore, ChoreService, Frequency} from '../../services/chore/chore.service';
 import {EventsService, EventTopic} from '../../services/events/events.service';
-import {IonItemSliding, NavController} from '@ionic/angular';
+import {IonItemSliding} from '@ionic/angular';
+import {NavigationService, Page} from '../../services/navigation/navigation.service';
 
 export class ChoreGroup {
     groupName: string;
@@ -37,7 +38,7 @@ export class SetupChoresPage {
     constructor(private kidService: KidService,
                 private choreService: ChoreService,
                 private eventsService: EventsService,
-                private navController: NavController) {
+                private navigationService: NavigationService) {
         eventsService.subscribe(EventTopic.ChoreListChanged, () => {
             this.refresh();
         });
@@ -55,7 +56,7 @@ export class SetupChoresPage {
     }
 
     chooseChore(chore: Chore) {
-        this.navController.navigateForward('/setup/tab/setup-chores/chores/' + chore.id);
+        this.navigationService.navigateForward(Page.SetupChoreEdit, [chore.id]);
     }
 
     unassign(assignment: ChoreAssignedToKids) {
@@ -80,7 +81,7 @@ export class SetupChoresPage {
     }
 
     private navigateToKids() {
-        this.navController.navigateBack('/setup/tab/setup-kids');
+        this.navigationService.navigateBack(Page.SetupKids);
     }
 
     private updateAssignments() {

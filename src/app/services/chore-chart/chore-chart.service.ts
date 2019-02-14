@@ -41,6 +41,8 @@ export class CompletableChore extends CompleteChore {
 })
 export class ChoreChartService {
 
+    initialized = false;
+
     // KidId -> AssignmentId -> ChoreKey -> CompleteChore
     completedChoreMap: Map<string, Map<string, Map<string, CompleteChore>>> = new Map();
 
@@ -62,6 +64,7 @@ export class ChoreChartService {
             this.handleDoAssignmentTransactions(transactions);
             this.refreshCompletableChoreMap();
             this.eventService.publish(EventTopic.DoAssignment);
+            this.initialized = true;
         });
 
         this.eventService.subscribe(EventTopic.AssignmentChanged, () => {

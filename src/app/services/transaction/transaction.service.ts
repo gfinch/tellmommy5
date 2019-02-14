@@ -106,12 +106,8 @@ export class TransactionService {
     }
 
     replayTransactionsSince(transactionType: TransactionType, lastTransactionTimestamp: number): Promise<void> {
-        return new Promise<void>((resolve, reject) => {
-            console.log('Attempting to replay transactionMap: ' + transactionType + ' since ' + lastTransactionTimestamp);
-            this.retrieveTransactionsSince(transactionType, lastTransactionTimestamp).then(transactions => {
-                console.log('Found ' + transactions.length + ' transactionMap for ' + transactionType);
-                this.publishTransactionEvent(transactionType, transactions);
-            });
+        return this.retrieveTransactionsSince(transactionType, lastTransactionTimestamp).then(transactions => {
+            this.publishTransactionEvent(transactionType, transactions);
         });
     }
 

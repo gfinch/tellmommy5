@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Kid, KidService} from '../../services/kid/kid.service';
 import {EventsService, EventTopic} from '../../services/events/events.service';
-import {NavController} from '@ionic/angular';
+import {NavigationService, Page} from '../../services/navigation/navigation.service';
 
 @Component({
     selector: 'app-choose-a-kid',
@@ -12,7 +12,7 @@ export class ChooseAKidPage {
 
     kids: Array<Kid> = [];
 
-    constructor(private navController: NavController,
+    constructor(private navigationService: NavigationService,
                 private kidService: KidService,
                 private eventService: EventsService) {
         this.refresh();
@@ -33,7 +33,7 @@ export class ChooseAKidPage {
     }
 
     goToKidPage(kid: Kid) {
-        this.navController.navigateForward('/view-edit-kids-chores/' + kid.id);
+        this.navigationService.navigateForward(Page.ViewEditKidsChores, [kid.id]);
     }
 
 }
