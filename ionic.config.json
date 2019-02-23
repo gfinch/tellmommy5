@@ -1,6 +1,9 @@
 {
   "name": "tellmommy5",
-  "integrations": {},
+  "integrations": {
+    "cordova": {},
+    "capacitor": {}
+  },
   "type": "angular",
   "id": "42841803"
 }

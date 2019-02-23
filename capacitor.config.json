@@ -1,0 +1,11 @@
+{
+  "appId": "biz.mamabird.tellmommy",
+  "appName": "Tell My Mommy",
+  "bundledWebRuntime": false,
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": false
+    }
+  }
+}

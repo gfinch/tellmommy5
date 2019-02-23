@@ -12,7 +12,7 @@ import {NavigationService} from '../services/navigation/navigation.service';
 @Injectable({
     providedIn: 'root'
 })
-export class InitializedGuardGuard implements CanActivate {
+export class InitializedGuard implements CanActivate {
     constructor(private navigationService: NavigationService,
                 private accountService: AccountService,
                 private bankService: BankService,
@@ -24,12 +24,20 @@ export class InitializedGuardGuard implements CanActivate {
 
     canActivate(next: ActivatedRouteSnapshot,
                 state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+        return new Promise<boolean>((resolve) => {
+            this.waitForServicesToInitialize(() => resolve(true));
+        });
+    }
+
+    waitForServicesToInitialize(callback) {
         if (this.accountService.initialized && this.bankService.initialized &&
             this.choreService.initialized && this.choreChartService.initialized &&
             this.rewardSystemService.initialized && this.kidService.initialized) {
-            return true;
+            callback();
         } else {
-            return false;
+            window.setTimeout(() => {
+                this.waitForServicesToInitialize(callback);
+            }, 100);
         }
     }
 }

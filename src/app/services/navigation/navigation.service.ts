@@ -27,14 +27,14 @@ export class NavigationService {
         [Page.Login, 'login'],
         [Page.ForgotPass, 'forgot-pass'],
         [Page.Home, 'choose-a-kid'],
-        [Page.SetupRewardSystem, '/setup/tabs/choose-reward-system'],
+        [Page.SetupRewardSystem, '/setup/tab/choose-reward-system'],
         [Page.SetupKids, '/setup/tab/setup-kids'],
         [Page.SetupKidEdit, '/setup/tab/setup-kids/kids/?'],
         [Page.ChooseAvatar, '/setup/tab/setup-kids/kids/?/avatar'],
         [Page.SetupChores, '/setup/tab/setup-chores'],
         [Page.SetupChoreEdit, '/setup/tab/setup-chores/chores/?'],
         [Page.ChooseAKid, 'choose-a-kid'],
-        [Page.ViewEditKidsChores, 'view-edit-kids-chores'],
+        [Page.ViewEditKidsChores, 'view-edit-kids-chores/?'],
         [Page.ViewEditKidsAccount, 'view-edit-kids-account/?/?'],
     ]);
 

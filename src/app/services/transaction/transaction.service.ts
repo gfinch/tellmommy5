@@ -61,7 +61,7 @@ export class TransactionService {
                 private eventsService: EventsService) {
         console.log('Instantiating TransactionService');
         this.transactionMap = new Map<TransactionType, Map<string, Transaction>>();
-        eventsService.subscribe(EventTopic.ClearAll, (transaction: Transaction) => {
+        eventsService.subscribe(EventTopic.ClearAll, () => {
             this.transactionMap.clear();
         });
     }
@@ -107,6 +107,7 @@ export class TransactionService {
 
     replayTransactionsSince(transactionType: TransactionType, lastTransactionTimestamp: number): Promise<void> {
         return this.retrieveTransactionsSince(transactionType, lastTransactionTimestamp).then(transactions => {
+            console.log(transactionType + ' : ' + transactions);
             this.publishTransactionEvent(transactionType, transactions);
         });
     }
@@ -170,7 +171,8 @@ export class TransactionService {
                 const storageKey = this.buildStorageKey(transactionType);
                 console.log('Attempting to get ' + storageKey);
                 this.storageService.get(storageKey)
-                    .then(transactions => {
+                    .then(storageString => {
+                        const transactions = this.parse(storageString);
                         if (transactions) {
                             console.log('Found existing transactionMap for ' + storageKey);
                             this.transactionMap.set(transactionType, transactions);
@@ -178,8 +180,8 @@ export class TransactionService {
                         } else {
                             console.log('Creating a new map for ' + storageKey);
                             const emptyTransactions = new Map<string, Transaction>();
-
-                            this.storageService.set(storageKey, emptyTransactions).then(() => {
+                            const emptyStorageString = this.stringify(emptyTransactions);
+                            this.storageService.set(storageKey, emptyStorageString).then(() => {
                                 this.transactionMap.set(transactionType, emptyTransactions);
                                 resolve(emptyTransactions);
                             });
@@ -205,7 +207,8 @@ export class TransactionService {
                 }
                 this.transactionMap.set(transactionType, transactions);
                 const storageKey = this.buildStorageKey(transactionType);
-                this.storageService.set(storageKey, transactions).then(() => {
+                const storageString = this.stringify(transactions);
+                this.storageService.set(storageKey, storageString).then(() => {
                     resolve(transactions);
                 }).catch(err => reject(err));
             }).catch(err => reject(err));
@@ -214,5 +217,13 @@ export class TransactionService {
 
     private buildStorageKey(transactionType: TransactionType): string {
         return 'Transaction_' + transactionType;
+    }
+
+    private stringify(transactions: Map<string, Transaction>): string {
+        return JSON.stringify([...transactions]);
+    }
+
+    private parse(transactionsString: string): Map<string, Transaction> {
+        return new Map(JSON.parse(transactionsString));
     }
 }

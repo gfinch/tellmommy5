@@ -8,6 +8,7 @@ import {Account, AccountService} from '../../services/account/account.service';
 import {EventsService, EventTopic} from '../../services/events/events.service';
 import * as moment from 'moment';
 import {ChoreChartService} from '../../services/chore-chart/chore-chart.service';
+import {AlertController, IonItemSliding} from '@ionic/angular';
 
 export class DisplayableTransaction {
     accountTransaction: AccountTransaction;
@@ -38,7 +39,8 @@ export class ViewEditKidsAccountPage implements OnInit {
                 private choreService: ChoreService,
                 private choreChartService: ChoreChartService,
                 private bankService: BankService,
-                private eventService: EventsService) {
+                private eventService: EventsService,
+                private alertController: AlertController) {
         this.eventService.subscribe(EventTopic.RewardSystemChanged, () => {
             this.refresh();
         });
@@ -49,6 +51,7 @@ export class ViewEditKidsAccountPage implements OnInit {
             this.refresh();
         });
         this.eventService.subscribe(EventTopic.Deposit, () => {
+            console.log('Got a deposit!');
             this.refresh();
         });
     }
@@ -71,10 +74,13 @@ export class ViewEditKidsAccountPage implements OnInit {
         return this.bankService.accountTransactions(this.rewardSystem, this.kidId, this.accountId).map(accountTransaction => {
             let choreIcon = null;
             if (accountTransaction.assignmentTransactionId) {
+                console.log('Got assignment tran id' + accountTransaction.assignmentTransactionId);
                 const assignment = this.choreChartService.findAssignment(accountTransaction.assignmentTransactionId);
                 if (assignment) {
+                    console.log('Got chore id' + assignment.choreId);
                     const chore = this.choreService.getChore(assignment.choreId);
                     if (chore) {
+                        console.log('Got chore icon' + chore.icon);
                         choreIcon = chore.icon;
                     }
                 }
@@ -88,6 +94,70 @@ export class ViewEditKidsAccountPage implements OnInit {
                 transactionTime: transactionTime
             };
         });
+    }
+
+    private deleteTransaction(displayableTransaction: DisplayableTransaction) {
+        const accountTransaction = displayableTransaction.accountTransaction;
+        const item = <IonItemSliding><any>document.getElementById(accountTransaction.id);
+        if (item) {
+            item.close();
+        }
+
+        if (accountTransaction.assignmentTransactionId && displayableTransaction.choreIcon) {
+            this.choreChartService.uncompleteChoreByTransactionId(this.kidId, accountTransaction.assignmentTransactionId);
+        } else {
+            this.bankService.cancelDeposit(this.rewardSystem, this.kidId, this.accountId, accountTransaction.id);
+        }
+    }
+
+    private earnButton() {
+        this.promptForDebit('Earn', 'How much did you earn?', 'How did you earn it?', (result => {
+            this.bankService.depositToOneAccount(this.rewardSystem, this.kidId, this.accountId, result.amount, result.memo);
+        }));
+    }
+
+    private spendButton() {
+        this.promptForDebit('Spend', 'How much did you spend?', 'What did you spend it on?', (result => {
+            this.bankService.depositToOneAccount(this.rewardSystem, this.kidId, this.accountId, result.amount * -1, result.memo);
+        }));
+    }
+
+    private async promptForDebit(header, message, memo, handler) {
+        let placeholder = '';
+        if (this.account.rewardSystem === RewardSystem.Money) {
+            placeholder = '$';
+        } else if (this.account.rewardSystem === RewardSystem.Time) {
+            placeholder = 'minutes';
+        } else if (this.account.rewardSystem === RewardSystem.Points) {
+            placeholder = 'points';
+        }
+        const alert = await this.alertController.create({
+            header: header,
+            message: message,
+            inputs: [
+                {
+                    name: 'amount',
+                    placeholder: placeholder,
+                    type: 'number',
+                    min: 0,
+                },
+                {
+                    name: 'memo',
+                    placeholder: memo,
+                    type: 'text'
+                }
+            ],
+            buttons: [{
+                text: 'Cancel',
+                role: 'cancel',
+                cssClass: 'danger'
+            }, {
+                text: header,
+                cssClass: 'primary',
+                handler: handler
+            }]
+        });
+        alert.present();
     }
 
 }

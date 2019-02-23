@@ -52,7 +52,9 @@ export class ChoreService {
         console.log('Instantiating Chore Service');
         this.eventsService.subscribe(EventTopic.AssignmentTransaction, (transactions: Transaction[]) => {
             this.addAssignmentsFromTransaction(transactions);
-            this.initialized = true;
+            this.listChores().then(() => {
+                this.initialized = true;
+            });
         });
         this.eventsService.subscribe(EventTopic.ClearAll, () => {
             this.choreList = [];

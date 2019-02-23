@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-toolbar>
+    <ion-toolbar color="primary">
         <ion-title>Sign in</ion-title>
     </ion-toolbar>
 </ion-header>
@@ -7,31 +7,33 @@
 <ion-content padding>
     <ion-list>
         <ion-item>
-            <ion-icon name="mail" color="primary" slot="start"></ion-icon>
+            <ion-icon name="mail" color="secondary" slot="start"></ion-icon>
             <ion-input type="email" [(ngModel)]="loginDetails.email" value="" placeholder="Email"></ion-input>
         </ion-item>
         <ion-item>
-            <ion-icon name="lock" color="primary" slot="start"></ion-icon>
+            <ion-icon name="lock" color="secondary" slot="start"></ion-icon>
             <ion-input type="password" [(ngModel)]="loginDetails.password" value="" placeholder="Password"></ion-input>
         </ion-item>
     </ion-list>
     <ion-grid>
         <ion-row>
             <ion-col>
-                <ion-button shape="round" expand="full" size="large" (click)="doLogin()"
+                <ion-button shape="round" color="secondary" expand="full" size="large" (click)="doLogin()"
                             [disabled]="isButtonDisabled">Sign In
                 </ion-button>
             </ion-col>
         </ion-row>
         <ion-row>
             <ion-col>
-                <ion-button fill="clear" expand="full" size="small" (click)="goToRegisterPage()">Not Registered?
+                <ion-button fill="clear" color="secondary" expand="full" size="small"
+                            (click)="goToRegisterPage()">Not Registered?
                 </ion-button>
             </ion-col>
         </ion-row>
         <ion-row>
             <ion-col>
-                <ion-button fill="clear" expand="full" size="small" (click)="goToForgotPassPage()">Forgot Password?
+                <ion-button fill="clear" color="secondary" expand="full" size="small"
+                            (click)="goToForgotPassPage()">Forgot Password?
                 </ion-button>
             </ion-col>
         </ion-row>

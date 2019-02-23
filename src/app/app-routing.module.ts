@@ -10,7 +10,6 @@ const routes: Routes = [
     {path: 'forgot-pass', loadChildren: './pages/forgot-pass/forgot-pass.module#ForgotPassPageModule'},
     {
         path: 'home',
-        canActivate: [AuthGuard, SetupGuard],
         redirectTo: 'choose-a-kid'
     },
     {
@@ -19,21 +18,19 @@ const routes: Routes = [
         canActivate: [AuthGuard]
     },
     {
-        path: 'view-edit-kids-chores/:id',
-        loadChildren: './pages/view-edit-kids-chores/view-edit-kids-chores.module#ViewEditKidsChoresPageModule'
-    },
-    {
         path: 'choose-a-kid',
         loadChildren: './pages/choose-a-kid/choose-a-kid.module#ChooseAKidPageModule',
         canActivate: [AuthGuard, SetupGuard]
     },
     {
-        path: 'view-edit-kids-chores',
-        loadChildren: './pages/view-edit-kids-chores/view-edit-kids-chores.module#ViewEditKidsChoresPageModule'
+        path: 'view-edit-kids-chores/:id',
+        loadChildren: './pages/view-edit-kids-chores/view-edit-kids-chores.module#ViewEditKidsChoresPageModule',
+        canActivate: [AuthGuard, SetupGuard]
     },
     {
         path: 'view-edit-kids-account/:kidId/:accountId',
-        loadChildren: './pages/view-edit-kids-account/view-edit-kids-account.module#ViewEditKidsAccountPageModule'
+        loadChildren: './pages/view-edit-kids-account/view-edit-kids-account.module#ViewEditKidsAccountPageModule',
+        canActivate: [AuthGuard, SetupGuard]
     }
 ];
 

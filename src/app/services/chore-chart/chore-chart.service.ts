@@ -101,6 +101,20 @@ export class ChoreChartService {
         });
     }
 
+    uncompleteChoreByTransactionId(kidId: string, assignmentTransactionId: string) {
+        const kid = this.kidService.getKid(kidId);
+        console.log('Got kid ' + kid.name);
+        const assignment = this.findAssignment(assignmentTransactionId);
+        console.log('Got assignment ' + assignment.id);
+        const choreKey = this.findChoreKey(assignmentTransactionId);
+        console.log('Got chorekey ' + choreKey.choreKey);
+        const completedChore = this.findCompletedChore(kid, assignment, choreKey.choreKey);
+        console.log('Got completed chore ' + completedChore.id);
+        const completableChore = this.mapToCompleteableChore(completedChore);
+        console.log('Got completed chore ' + completableChore.id);
+        this.uncompleteChore(completableChore);
+    }
+
     uncompleteChore(cc: CompletableChore) {
         if (cc.completed) {
             const uncompletedChore: CompleteChore = {
@@ -168,9 +182,15 @@ export class ChoreChartService {
     }
 
     findAssignment(assignmentTransactionId: string): ChoreAssignment {
-        const tokens = assignmentTransactionId.split('-');
+        const tokens = assignmentTransactionId.split('@');
         const assignmentId = tokens[0];
         return this.choreService.getAssignmentById(assignmentId);
+    }
+
+    findChoreKey(assignmentTransactionId: string): ChoreKeyDetails {
+        const tokens = assignmentTransactionId.split('@');
+        const choreKey = tokens[1];
+        return this.choreKeyService.getChoreKeyDetails(choreKey);
     }
 
     private choreEndsInRange(chore: CompletableChore, rangeStart: Moment, rangeEnd: Moment): boolean {
@@ -212,7 +232,7 @@ export class ChoreChartService {
     }
 
     private assignmentTransactionId(assignmentId: string, choreKey: string): string {
-        return assignmentId + '_' + choreKey;
+        return assignmentId + '@' + choreKey;
     }
 
     private handleDoAssignmentTransactions(transactions: Transaction[]) {
