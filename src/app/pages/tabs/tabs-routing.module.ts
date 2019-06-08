@@ -63,7 +63,7 @@ const routes: Routes = [
             },
             {
                 path: '',
-                redirectTo: '/setup/tabs/choose-reward-system',
+                redirectTo: '/setup/tab/choose-reward-system',
                 pathMatch: 'full'
             }
         ]

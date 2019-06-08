@@ -26,6 +26,7 @@ export class ViewEditKidsChoresPage implements OnInit {
     remainingChores: CompletableChore[];
     otherChores: Map<ReportingGroup, CompletableChore[]>;
     accountTotals: DisplayableAccount[];
+    segment = 'todo';
     finishedGroups: FinishedGroup[] = [{
         reportingGroup: ReportingGroup.FinishedToday,
         isOpen: false,

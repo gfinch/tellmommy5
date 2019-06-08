@@ -1,0 +1,35 @@
+<ion-card *ngFor="let kid of kids" (click)="goToKidPage(kid)">
+    <ion-card-header>
+        <ion-avatar class="avatar">
+            <img [src]="kid.avatar">
+            <ion-badge class="chore-icon badge-negative" *ngIf="getRemainingChoreCount(kid) > 0">
+                {{getRemainingChoreCount(kid)}}
+            </ion-badge>
+            <ion-icon class="chore-icon positive" *ngIf="getRemainingChoreCount(kid) <= 0"
+                      name="checkmark-circle" (click)="editAvatar(kid)"></ion-icon>
+        </ion-avatar>
+        <ion-card-title text-center>
+            {{kid.name}}
+        </ion-card-title>
+        <ion-button class="pencil" color="secondary" (click)="editKid(kid)">
+            <ion-icon name="create"></ion-icon>
+        </ion-button>
+    </ion-card-header>
+    <ion-card-content>
+        <ion-grid no-padding>
+            <ion-row align-items-stretch>
+                <ion-col [size]="getAccountColumnWidth(kid)" *ngFor="let account of kidsAccounts.get(kid)">
+                    <ion-label (click)="viewAccount(kid, account)">
+                        <h3 text-center>{{account.account.name}}</h3>
+                        <p text-center>
+                            <ion-badge *ngIf="account.positive"
+                                       class="badge-positive">{{account.accountTotal}}</ion-badge>
+                            <ion-badge *ngIf="!account.positive"
+                                       class="badge-negative">{{account.accountTotal}}</ion-badge>
+                        </p>
+                    </ion-label>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-card-content>
+</ion-card>

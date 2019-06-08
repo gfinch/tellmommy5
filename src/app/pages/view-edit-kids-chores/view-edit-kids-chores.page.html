@@ -1,9 +1,16 @@
 <ion-header>
     <ion-toolbar color="primary">
-        <ion-title>{{kid?.name}}</ion-title>
         <ion-buttons slot="start">
             <ion-back-button></ion-back-button>
         </ion-buttons>
+        <ion-segment [(ngModel)]="segment">
+            <ion-segment-button value="todo">
+                To Do
+            </ion-segment-button>
+            <ion-segment-button value="past">
+                Past
+            </ion-segment-button>
+        </ion-segment>
         <ion-buttons slot="end">
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
@@ -34,7 +41,7 @@
 
     <ion-item-group *ngFor="let group of finishedGroups">
         <ion-item-divider color="light" (click)="toggleGroup(group)"
-                          *ngIf="otherChores?.get(group.reportingGroup).length > 0">
+                          *ngIf="segment == 'past' && otherChores?.get(group.reportingGroup).length > 0">
             {{group.name}}
             <ion-icon *ngIf="group.isOpen" name="ios-arrow-dropup" slot="end" small></ion-icon>
             <ion-icon *ngIf="!group.isOpen" name="ios-arrow-dropdown" slot="end" small></ion-icon>

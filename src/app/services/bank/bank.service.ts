@@ -18,6 +18,7 @@ export class AccountTransaction {
 
 export class DisplayableAccount {
     account: Account;
+    positive: boolean;
     accountTotal: string;
 }
 
@@ -122,9 +123,10 @@ export class BankService {
             const total = transactionsForAccount.reduce((r, c) => {
                 return r + c.value;
             }, 0);
-            const accountTotal = total.toString();
+            const accountTotal = this.formatTotalForRewardSystem(rewardSystem, total);
             return {
                 account: account,
+                positive: total >= 0,
                 accountTotal: accountTotal
             };
         });
@@ -152,6 +154,19 @@ export class BankService {
         Promise.all(promises).then(() => {
             this.transactionService.commitTransactions(TransactionType.Deposit, transactionGroup);
         });
+    }
+
+    private formatTotalForRewardSystem(rewardSystem: RewardSystem, total: number): string {
+        if (rewardSystem == RewardSystem.Money) {
+            const dollars = total / 100;
+            return '$' + dollars.toFixed(2);
+        } else if (rewardSystem == RewardSystem.Points) {
+            return total.toFixed(0) + ' points';
+        } else if (rewardSystem == RewardSystem.Time) {
+            return total.toFixed(0) + ' minutes';
+        } else {
+            return '';
+        }
     }
 
     private splitValueAcrossAccounts(accounts: Account[], value: number): Map<string, number> {

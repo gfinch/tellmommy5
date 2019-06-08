@@ -51,7 +51,6 @@ export class ViewEditKidsAccountPage implements OnInit {
             this.refresh();
         });
         this.eventService.subscribe(EventTopic.Deposit, () => {
-            console.log('Got a deposit!');
             this.refresh();
         });
     }
@@ -74,13 +73,10 @@ export class ViewEditKidsAccountPage implements OnInit {
         return this.bankService.accountTransactions(this.rewardSystem, this.kidId, this.accountId).map(accountTransaction => {
             let choreIcon = null;
             if (accountTransaction.assignmentTransactionId) {
-                console.log('Got assignment tran id' + accountTransaction.assignmentTransactionId);
                 const assignment = this.choreChartService.findAssignment(accountTransaction.assignmentTransactionId);
                 if (assignment) {
-                    console.log('Got chore id' + assignment.choreId);
                     const chore = this.choreService.getChore(assignment.choreId);
                     if (chore) {
-                        console.log('Got chore icon' + chore.icon);
                         choreIcon = chore.icon;
                     }
                 }
@@ -112,13 +108,21 @@ export class ViewEditKidsAccountPage implements OnInit {
 
     private earnButton() {
         this.promptForDebit('Earn', 'How much did you earn?', 'How did you earn it?', (result => {
-            this.bankService.depositToOneAccount(this.rewardSystem, this.kidId, this.accountId, result.amount, result.memo);
+            let amount = Number(result.amount);
+            if (this.rewardSystem == RewardSystem.Money) {
+                amount = amount * 100;
+            }
+            this.bankService.depositToOneAccount(this.rewardSystem, this.kidId, this.accountId, amount, result.memo);
         }));
     }
 
     private spendButton() {
         this.promptForDebit('Spend', 'How much did you spend?', 'What did you spend it on?', (result => {
-            this.bankService.depositToOneAccount(this.rewardSystem, this.kidId, this.accountId, result.amount * -1, result.memo);
+            let amount = Number(result.amount);
+            if (this.rewardSystem == RewardSystem.Money) {
+                amount = amount * 100;
+            }
+            this.bankService.depositToOneAccount(this.rewardSystem, this.kidId, this.accountId, amount * -1, result.memo);
         }));
     }
 
